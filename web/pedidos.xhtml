@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" lang="pt_br"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+        <title>SGR | Principal</title>
+
+        <!-- Carrega Bootstrap e CSS Extra -->
+        <link href="css/bootstrap.css" rel="stylesheet"></link>
+        <link href="css/sgr.css" rel="stylesheet"></link>
+        <link href="css/mainclient.css" rel="stylesheet"></link>
+        <link href="css/font-awesome.min.css" rel="stylesheet"></link>
+        <!-- Carrega JQuery -->
+        <script src="js/jquery-2.1.3.js"></script>
+        <!-- Carrega Plugins Avulsos -->		
+        <script src="js/bootstrap.js"></script>
+
+    </h:head>
+
+    <h:body>
+        <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <img src="img/ajax-loader.gif" class="img-responsive"></img>	
+        </p:dialog>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+
+        <!-- [I] Painel Principal -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+
+                    <!-- [I] Logo -->                
+                    <a class="navbar-brand" href="#">
+                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
+                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
+                    </a>
+
+                    <!-- [F] Exibição do Usuário -->
+                    <p class="navbar-text" >Olá, <b>#{funcionarioController.funcionario.nome}</b>!</p>     
+
+                </div>
+
+                <!-- [F] Informações -->
+                <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
+                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock"></span></b></p>               
+
+                <!-- [S] Script Hora -->
+
+                <script type="text/javascript">
+                    //<![CDATA[
+
+                    function clock()
+                    {
+                        var digital = new Date();
+                        var hours = digital.getHours();
+                        var minutes = digital.getMinutes();
+                        var seconds = digital.getSeconds();
+                        if (minutes <= 9)
+                            minutes = "0" + minutes;
+                        if (seconds <= 9)
+                            seconds = "0" + seconds;
+                        dispTime = hours + ":" + minutes + ":" + seconds;
+                        var basicclock = document.getElementById('basicclock');
+                        basicclock.innerHTML = dispTime;
+                        setTimeout("clock()", 1000);
+                    }
+                    clock();
+                    //]]>
+                </script>                    
+
+                <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
+                                                                       aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate"></span></b></p>
+
+                <!-- [S] Script Data -->
+
+                <script type="text/javascript">                         //<![CDATA[
+                    var now = new Date();
+                    var days = new Array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
+                    var months = n ew Array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+                            var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+                    var year = (now.getYear() < 1000) ? now.getYear() + 1900 : now.getYear();
+                    today = days[now.getDay()] + ", " + date + " de " + months[now.getMonth()] + ", " + year;
+                    var basicdate = document.getElementById('basicdate');
+                    basicdate.innerHTML = today;
+                    //]]>
+                </script>
+
+                <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
+
+                    <!-- [I] Configurações -->
+                    <li><div class="dropdown" style="margin-top:8px; margin-right:5px;">
+
+                            <h:form>  <p:commandButton class="btn btn-default"  ajax="false" value="Alterar Dados Cadastrais" actionListener="#{clientController.goTo('/clienteCadastro.xhtml')}" /></h:form>
+
+                        </div></li>
+
+
+                    <!-- [I] Logout Button -->
+                    <li><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">Sair</button></li>
+                </ul>       
+
+            </div>                 
+        </nav>
+
+        <!-- [I] Fim do Painel Principal -->
+
+        <!-- [I] Display Principal -->
+        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}">
+            <div class="container">
+                <div class="row clearfix">
+                    <div class="col-md-6 column">
+
+
+                        <div class="panel panel-default">
+                            <h:panelGrid style="margin-top: 10px" columns="3">
+                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/caixa.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Caixa')}"  value="Voltar pra tela principal"  />
+                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/cozinha.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Cozinha')}"  value="Voltar pra tela principal"  />
+                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/waiter.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}"  value="Voltar pra tela principal"  />
+
+                                
+                                
+                            </h:panelGrid>  
+
+                            <h:panelGrid columns="3">
+                                <h:outputText value="Buscar por nome do cliente" />
+                                <p:inputText value="#{funcionarioController.filtroPedido}" />
+                                <p:commandButton value="Atualizar" update="movimento" actionListener="#{funcionarioController.carregarPedidos()}"  />
+                                
+                            </h:panelGrid>
+                            
+                            <div class="panel-body">
+                                <div class="row clearfix">
+                                    <div class="table-responsive">
+                                        <p:dataTable id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaMovimento}">
+
+                                            
+                                            <p:column headerText="Cliente">
+                                                <h:outputText style="color:#D45744;" value="#{movimento.clienteNome}" />
+                                            </p:column>
+                                           
+                                            <p:column headerText="Item">
+                                                <h:outputText value="#{movimento.item}" />
+                                            </p:column>
+
+                                            <p:column headerText="Quantidade">
+                                                <h:outputText value="#{movimento.quantidade}" />
+                                            </p:column>  
+
+                                            <p:column headerText="Preço">
+                                                <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
+                                                    <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
+                                                </p:outputLabel>
+                                            </p:column>    
+
+                                            <p:column headerText="Status do Item">
+                                                <h:outputText value="#{movimento.itemStatus}" />
+                                            </p:column>
+
+
+                                            <p:column headerText="Detalhe">
+                                                <p:commandButton style="text-align: left" ajax="false" value="Ver" immediate="true" actionListener="#{funcionarioController.pedidoSelecionado(movimento)}" icon="ui-icon-search" update=":frmPrincipal :frmDetalhe" />
+                                            </p:column>
+
+
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- [I][P] Painel Direito -->    
+                    </div>
+                    <div id="abId0.5800432859169298" class="col-md-6 column">
+                        <div class="row clearfix">
+
+                            <div class="col-md-6 column">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Recomendações</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 column">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Promoções</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Populares</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+        </h:form>
+        <!-- -->   
+
+        <!--Formulario pedido detalhe-->
+        <h:form id="frmDetalhe" rendered="#{funcionarioController.tela == 1}" >
+
+            <h:panelGrid width="70%" style="background-color: #F8F8F8;opacity:0.76;-moz-opacity: 0.65;filter: alpha(opacity=65);text-align: center;margin-left: 40px;margin-top: 5%"  >
+                <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                <p:separator/>
+                <h3>Detalhes do pedido </h3><br/>
+
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel  value="Produto:  " style="margin-left: 10px" />
+                    <p:outputLabel value="#{funcionarioController.movimentoBean.item}"  style="margin-left: 10px" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel  value="Preço:  " style="margin-left: 10px" />
+                    <p:outputLabel value="#{funcionarioController.movimentoBean.preco}"  style="margin-left: 10px" >
+                        <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
+                    </p:outputLabel>
+
+                </h:panelGrid>  
+
+            
+                <!-- [I] Funções de Conta -->
+                <h:panelGrid columns="3">
+                    <p:commandButton update=":frmPrincipal :frmDetalhe"  ajax="false" action="#{funcionarioController.altearPedidoStatus()}" class="btn btn-default" value="Salvar"  />
+                    <p:commandButton rendered="#{funcionarioController.funcionario.funcao.equals('Caixa')}" update=":frmPrincipal :frmDetalhe" ajax="false" class="btn btn-warning" value="Excluir Item" style="float:right;" actionListener="#{funcionarioController.excluirItem}"/>
+                    <p:commandButton update=":frmPrincipal :frmDetalhe" ajax="false" class="btn btn-default" value="Voltar" style="float:right;" actionListener="#{funcionarioController.mudarTela(0)}"/>
+
+
+                </h:panelGrid >
+
+            </h:panelGrid>
+            <!-- [I] Footer -->
+
+            <!-- [M] Modal -->
+        </h:form>
+
+        <!-- [S] Carrega JQuery -->
+        <script src="js/jquery-2.1.3.js"></script>
+        <!-- [S] Carrega Plugins Avulsos -->		
+        <script src="js/bootstrap.js"></script>
+
+
+
+    </h:body>
+
+</html>

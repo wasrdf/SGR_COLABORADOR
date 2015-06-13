@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+      <title> Sistema de Gestão Restaurante</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <!-- Carrega Bootstrap e CSS Extra -->
+        <link href="css/bootstrap.css" rel="stylesheet"></link>
+        <link href="css/SGR_Beta.css" rel="stylesheet"></link>
+        <link href="css/sgr.css" rel="stylesheet"></link>
+        <!-- Carrega JQuery -->
+      
+        <!-- Carrega Plugins Avulsos -->		
+        <script src="js/bootstrap.js"></script>
+
+    
+    </h:head>   
+    <h:body>
+        <ui:include src="topo.xhtml" />
+        <h:form   id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
+
+
+            <h:panelGrid style="width: 70%;margin-left: 20px;margin-top: 35px" >
+                <h:panelGrid  columns="4">            
+                    <p:inputText class="form-control" value="#{funcionarioController.filtroDeFuncionario}" />
+                    <p:commandButton class="btn btn-default" style="margin-left: 5px" value="Buscar" actionListener="#{funcionarioController.listarFuncionario()}" update="lista" />
+                    <p:commandButton  class="btn btn-default" style="margin-left: 5px" value="Inserir novo colaborador" actionListener="#{funcionarioController.mudarTela(1)}" ajax="false" update=":frmPrincipal :frmDetalhe" />                    
+                    <p:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/admin.jsf')}" value="Voltar pra tela principal"  >
+
+                    </p:commandButton> 
+                </h:panelGrid>
+                <br/>
+                <p:dataTable style="text-align: center" id="lista" tableStyleClass="table table-striped" emptyMessage="Nenhum funcionario encontrado"
+                             var="lista" value="#{funcionarioController.listFuncionario}">
+                    <p:column width="10%" headerText="Código">
+                        <h:outputText style="color:#D45744;" value="#{lista.codigo}"   />                                    
+                    </p:column>
+
+                    <p:column headerText="Nome">
+                        <h:commandLink actionListener="#{funcionarioController.funcionarioSelecionado(lista)}"  style="color:#D45744;" value="#{lista.nome}"   />                                    
+                    </p:column>
+                    <p:column headerText="Função" width="20%" style="align:left;text-align:left" >
+                        <h:commandLink actionListener="#{funcionarioController.funcionarioSelecionado(lista)}"  value="#{lista.funcao}"  />
+                    </p:column>
+
+                </p:dataTable>  
+
+            </h:panelGrid>
+
+        </h:form>
+
+        <!-- [I] Footer -->
+
+        <h:form style="height: 590px;margin-top: 35px;background-color: #F8F8F8;opacity:0.76;-moz-opacity: 0.65;
+                filter: alpha(opacity=65);text-align: center;margin-left: 40px;padding: 20px" id="frmDetalhe" rendered="#{funcionarioController.tela == 1}" >
+            <br/>
+            <h:panelGrid columns="4">
+
+                <p:commandButton ajax="false"  class="btn btn-success" style="margin-left: 5px" value="Salvar" 
+                                  actionListener="#{funcionarioController.salvar()}" 
+                                  update=":frmDetalhe :frmPrincipal" />           
+                <p:commandButton   class="btn btn-danger" style="margin-left: 5px" value="Apagar colaborador" 
+                                   actionListener="#{funcionarioController.deletarFuncionario()}" 
+                                   update=":frmDetalhe :frmPrincipal" />                   
+                <p:commandButton  ajax="false" class="btn btn-info" style="margin-left: 5px" value="Voltar pra tela principal" 
+                                  actionListener="#{funcionarioController.mudarTela(0)}" 
+                                  update=":frmDetalhe :frmPrincipal" />      
+
+
+
+
+            </h:panelGrid>
+            <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+            <p:separator/>
+            <h3> Cadastrar Colaborador </h3><br/><br/>
+
+            <h:panelGrid  columns="2">
+                <h:outputText value="Nome:" />
+                <p:inputText style="margin-left: 5px" size="33" value="#{funcionarioController.funcionarioNovo.nome}" />
+
+            </h:panelGrid>
+            <br/>
+
+            <h:panelGrid cellpadding="6" columns="4">
+                <h:outputText value="Data de nascimento:" />
+
+                <p:inputMask mask="99/99/9999" style="margin-left: 5px"  value="#{funcionarioController.funcionarioNovo.dataNasc}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" locale="pt-br" timeZone="GMT-03:00" /> 
+                </p:inputMask>
+                <h:outputText style="margin-left: 4px" value="Telefone:" />
+                <p:inputMask mask="(99)99999-9999"  value="#{funcionarioController.funcionarioNovo.telefone}" />
+
+              
+            </h:panelGrid>
+            <br/>
+            <h:panelGrid columns="4">
+                <h:outputText value="CPF:" />
+                <p:inputMask mask="999.999.999.99"  style="margin-left: 5px"  value="#{funcionarioController.funcionarioNovo.cpf}" />
+
+                <h:outputText value="RG:" style="margin-left: 5px" />
+                <p:inputMask mask="99.999.999-9" style="margin-left: 5px"  value="#{funcionarioController.funcionarioNovo.rg}" />
+
+            </h:panelGrid>
+            <br/>
+            <h:panelGrid columns="2" >
+                <h:outputLabel value="Função" />
+                <h:outputLabel value="Situação" />
+            
+                <h:selectOneMenu     value="#{funcionarioController.funcionarioNovo.funcao}" style="width:125px;margin-left: 5px">
+                    <f:selectItem   itemLabel="Garçom" itemValue="Garçom"   />
+                    <f:selectItem   itemLabel="Gerente"  itemValue="Gerente"  />
+                    <f:selectItem   itemLabel="Caixa" itemValue="Caixa"   />
+                    <f:selectItem   itemLabel="Cozinha" itemValue="Cozinha"   />
+                </h:selectOneMenu>
+           
+                <h:selectOneMenu     value="#{funcionarioController.funcionarioNovo.situacao}" style="width:125px;margin-left: 5px">
+                    <f:selectItem   itemLabel="Ativo" itemValue="Ativo"   />
+                    <f:selectItem   itemLabel="Inativo"  itemValue="Inativo"  />
+                  
+                </h:selectOneMenu>
+           
+            </h:panelGrid>
+           
+            <p:separator/>
+
+            <h4>Informações de Acesso ao Sistema</h4>
+            <h:panelGrid columns="2"> 
+                <h:outputText value="Usuário: " />
+                <p:inputText style="margin-left: 5px" value="#{funcionarioController.funcionarioNovo.nome_usuario}" />
+            </h:panelGrid>     <br/>
+            <h:panelGrid columns="4">
+                <h:outputText value="Senha:" />
+                <h:inputSecret value="#{funcionarioController.funcionarioNovo.senha}" />
+
+                <h:outputText value="Repetir senha:" />
+                <h:inputSecret value="#{funcionarioController.senha}" />
+
+            </h:panelGrid>
+
+
+        </h:form>    
+        <!-- [I] Display Principal -->
+
+
+        <!-- [I] Footer -->
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+
+                <!-- [F] Informações de Conta e Pedidos -->
+                <ul class="nav navbar-nav">
+                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> 15</span></p></li>
+                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ 00,00</span></p></li>
+                </ul>
+
+                <!-- [I] Funções de Conta -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><button type="button" class="btn btn-danger" style="margin-top:7px;">Encerrar Conta</button></li>
+                </ul>
+
+            </div>
+        </nav>
+
+        
+    </h:body>
+
+</html>
