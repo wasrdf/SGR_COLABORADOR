@@ -18,7 +18,16 @@ public class TableBean {
     private int funcionarioCodigo;
     private String funcionarioCpf;
     private String frag;
+    private String flagGarcom;
 
+    public String getFlagGarcom() {
+        return flagGarcom;
+    }
+
+    public void setFlagGarcom(String flagGarcom) {
+        this.flagGarcom = flagGarcom;
+    }
+    
     public int getNumero() {
         return numero;
     }

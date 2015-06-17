@@ -37,6 +37,7 @@ public class TableDAO {
                 tableBean.setNumero(rs.getInt("numero"));
                 tableBean.setFrag(rs.getString("flag"));
                 tableBean.setStatus(rs.getBoolean("status"));
+                tableBean.setFlagGarcom(rs.getString("flag_garcom"));
                 mesas.add(tableBean);
 
             }

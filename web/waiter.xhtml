@@ -26,23 +26,22 @@
         <ui:include src="topo.xhtml" />
         <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
             <h:panelGrid width="100%" >
-                    
-                
+                <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="movimento" />
+
                 <h:panelGrid  columns="1" width="40%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
 
-                    <h:panelGrid columns="2" cellpadding="5" cellspacing="5"  >
-                        <p:commandButton class="btn btn-info navbar-btn" style="margin-left: 20px;width: 250px" update="mesas" value="Atualizar Lista" actionListener="#{funcionarioController.recarregarMesas()}" />
+                    <h:panelGrid columns="1" cellpadding="5" cellspacing="5"  >
+                        
                         <p:commandButton class="btn btn-default navbar-btn" style="margin-left: 20px;width: 250px"  value="Cadastro de Clientes" ajax="false" actionListener="#{funcionarioController.navegarPara('/manterCliente.jsf')}" />
                     </h:panelGrid>
                     <br/>
 
-                    <p:dataTable style="text-align: center" id="mesas" tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
+                    <p:dataTable id="movimento" style="text-align: center"  tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
 
 
                         <p:column headerText="Mesa">
                             <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.numero}" />
                         </p:column>
-
 
                         <p:column headerText="Visualizar Itens">
                             <p:commandButton ajax="false" class="btn btn-default navbar-default" update="mesas" value="Visualizar" actionListener="#{funcionarioController.visualizarPedidos(mesas)}" />
@@ -61,14 +60,25 @@
         <h:form rendered="#{funcionarioController.tela == 1}" id="frmDetalhe">
             <h:panelGrid width="100%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
 
-                <h:panelGrid columns="2" cellpadding="5" cellspacing="5"  >
-                    <p:commandButton class="btn btn-info navbar-btn" style="margin-left: 50%;width: 150px" update="movimento" value="Atualizar Lista" actionListener="#{funcionarioController.recarregarMesas()}" />
+                <h:panelGrid columns="5" cellpadding="5" cellspacing="5" style="text-align: center" >
+                    <h:outputText style="font-weight: bold" value="Buscar por nome: " />
+                    <p:inputText style="margin-left: 10px" value="#{funcionarioController.filtroPedido}" />
+                  
+                    <p:commandButton class="btn btn-default navbar-default" style="margin-left: 10px" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
                     <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 50%;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
                 </h:panelGrid>
+
+
+
+
+
                 <br/>
-                 <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
-                 <br/>
-                 <p:dataTable   paginator="true" rowsPerPageTemplate="5,10,15" rows="10" style="text-align: center" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhuma pedido encontrado." var="movimento" value="#{funcionarioController.listaMovimento}">
+                <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                <br/>
+             
+                <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
+                
+                <p:dataTable   paginator="true" rowsPerPageTemplate="5,10,15" rows="10" style="text-align: center" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhuma pedido encontrado." var="movimento" value="#{funcionarioController.listaMovimento}">
 
 
                     <p:column headerText="Mesa">

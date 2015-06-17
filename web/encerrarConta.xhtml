@@ -37,14 +37,9 @@
             <h:panelGrid width="100%" >
 
 
-                <h:panelGrid  columns="1" width="40%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
+                <h:panelGrid  columns="1" width="100%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
 
-                    <h:panelGrid columns="1" cellpadding="5" cellspacing="5"  >
-                        <p:commandButton class="btn btn-info navbar-btn" style="width: 250px" update="mesas" value="Atualizar Lista" actionListener="#{funcionarioController.recarregarMesas()}" />
-
-                    </h:panelGrid>
-                    <br/>
-
+                     <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="mesas" />
                     <p:dataTable style="text-align: center" id="mesas" tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
 
 

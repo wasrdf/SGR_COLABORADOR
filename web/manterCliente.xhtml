@@ -156,7 +156,6 @@
                         <div class="panel-footer">
                             <p:commandButton ajax="false"  class="btn btn-default" rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}" value="Cancelar" actionListener="#{funcionarioController.navegarPara('/waiter.jsf')}"/>
                             <p:commandButton ajax="false" class="btn btn-default" rendered="#{funcionarioController.funcionario.funcao.equals('Gerente')}" value="Cancelar" actionListener="#{funcionarioController.navegarPara('/admin.jsf')}"/>
-
                             <p:commandButton ajax="false" value="Finalizar Cadastro" actionListener="#{funcionarioController.salvarClient()}"  class="btn btn-success" style="float:right;" />
                         </div>
 

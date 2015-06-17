@@ -77,9 +77,19 @@ public class FuncionarioController {
         contaItemBean.setStatus("Pronto");
         System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
         contaItemDAO.alterarItemStatus(contaItemBean);
-        carregarPedidos();
+        listarItensProntosESolicitados();
     }
 
+      public void desfazer(MovimentoBean pMovimentoBean) {
+        ContaItemDAO contaItemDAO = new ContaItemDAO();
+        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+        contaItemBean.setStatus("Solicitado");
+        
+        contaItemDAO.alterarItemStatus(contaItemBean);
+        listarItensProntosESolicitados();
+    }
+
+    
     public void alterarStatusItemEntregue(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
@@ -89,7 +99,7 @@ public class FuncionarioController {
             contaItemBean.setStatus("Entregue");
             System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
             contaItemDAO.alterarItemStatus(contaItemBean);
-            carregarPedidos();
+           listarItensProntosESolicitados();
         }
     }
 
@@ -199,9 +209,10 @@ public class FuncionarioController {
         tela = 1;
     }
 
-    public void limparPedidosPronto() {
+    public void listarItensProntosESolicitados() {
+        
         MovimentoService movimentoService = new MovimentoService();
-        listaMovimento = movimentoService.limparPedidosProntos("");
+        listaMovimento = movimentoService.listarItensSolicitados(filtroPedido);
     }
 
     public void encerrarConta() {
@@ -210,7 +221,7 @@ public class FuncionarioController {
         boolean status = false;
         listaMovimento = movimentoService.listarMovimentosPorMesa(tableBean.getNumero());
         for (int i = 0; i < listaMovimento.size(); i++) {
-            if (listaMovimento.get(i).getItemStatus().equals("Solicitado") || (listaMovimento.get(i).getItemStatus().equals("Pronto"))) {
+            if (listaMovimento.get(i).getItemStatus().equals("Solicitado")) {
                 status = false;
 
             } else {

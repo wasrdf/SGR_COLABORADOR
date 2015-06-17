@@ -23,36 +23,14 @@ import sgr.sql.QueryType;
  */
 public class MovimentoService {
 
-    public List<MovimentoBean> listarMovimentos(String pNome,int pClienteCodigo) {
-        
-        List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
-        QueryBuilder query = new QueryBuilder();
-   
-        query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
-        query.addQuery(QueryOperation.and, "vw_movimento.mesa_status", QueryGender.equal, String.valueOf(1), QueryType.number);
-        query.addQuery(QueryOperation.and, "vw_movimento.cliente_codigo", QueryGender.equal, String.valueOf(pClienteCodigo), QueryType.number);
-       
-        MovimentoDAO movimentoDAO = new MovimentoDAO();
-
-        try {
-            System.out.println("[movimentoservice] listando movimentos....");
-            movimentos = movimentoDAO.listaMovimentos(query);
-
-        } catch (SQLException ex) {
-            System.out.println("erro ao tentar listar movimentos: " + ex.getSQLState());
-            Logger.getLogger(MovimentoService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return movimentos;
-    }
-  
     public List<MovimentoBean> listarTodosMovimento(String pNome) {
-        
+
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
-   
+
         query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
-       
+        query.addQuery(QueryOperation.and, "vw_movimento.conta_status", QueryGender.equal, String.valueOf(1), QueryType.number);
+
         MovimentoDAO movimentoDAO = new MovimentoDAO();
 
         try {
@@ -66,16 +44,15 @@ public class MovimentoService {
 
         return movimentos;
     }
-   
-  
-   
+
     public List<MovimentoBean> listarMovimentosPorMesa(int pMesaNumero) {
-        
+
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
-   
-        query.addQuery(QueryOperation.empty, "vw_movimento.mesa_numero", QueryGender.equal,String.valueOf(pMesaNumero), QueryType.number);
-       
+
+        query.addQuery(QueryOperation.empty, "vw_movimento.mesa_numero", QueryGender.equal, String.valueOf(pMesaNumero), QueryType.number);
+        query.addQuery(QueryOperation.and, "vw_movimento.conta_status", QueryGender.equal, String.valueOf(1), QueryType.number);
+
         MovimentoDAO movimentoDAO = new MovimentoDAO();
 
         try {
@@ -89,15 +66,16 @@ public class MovimentoService {
 
         return movimentos;
     }
-   
-      public List<MovimentoBean> limparPedidosProntos(String pNome) {
-        
+
+    public List<MovimentoBean> listarItensSolicitados(String pNome) {
+
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
-   
+
         query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
-        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal,"Solicitado" , QueryType.text);
-       
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Solicitado", QueryType.text);
+        query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Pronto", QueryType.text);
+
         MovimentoDAO movimentoDAO = new MovimentoDAO();
 
         try {
@@ -111,7 +89,5 @@ public class MovimentoService {
 
         return movimentos;
     }
-  
-    
-    
+
 }

@@ -110,10 +110,12 @@
                 <h:panelGrid columns="4" cellpadding="5" cellspacing="5" style="text-align: center" >
                     <h:outputText style="font-weight: bold" value="Buscar por nome: " />
                     <p:inputText style="margin-left: 10px" value="#{funcionarioController.filtroPedido}" />
+                    <p:commandButton class="btn btn-default navbar-default" style="margin-left: 10px" update="movimento" value="Filtrar por cliente" actionListener="#{funcionarioController.listarItensProntosESolicitados()}" />
                     <p:commandButton class="btn btn-default navbar-default" style="margin-left: 10px" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
-                    <p:commandButton class="btn btn-default navbar-default" style="margin-left: 10px" update="movimento" value="Limpar pedidos prontos" actionListener="#{funcionarioController.limparPedidosPronto()}" />
                 </h:panelGrid>
                 <br/>
+                
+                <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
                 
                 <p:dataTable id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaMovimento}">
 
@@ -161,6 +163,7 @@
 
                     <p:column headerText="Alterar status">
                         <p:commandButton  update="movimento" value="Pronto" actionListener="#{funcionarioController.alterarStatusItem(movimento)}" />
+                        <p:commandButton  update="movimento" value="Desfazer" actionListener="#{funcionarioController.desfazer(movimento)}" />
                     </p:column>
 
 
@@ -174,32 +177,6 @@
 
             <!-- fim corpo da pagina -->
 
-            <!-- [I] Display Principal -->
-
-
-            <!-- [I] Footer -->
-
-
-            <!-- [I] Display Principal -->
-
-
-            <!-- [I] Footer -->
-            <nav class="navbar navbar-default navbar-fixed-bottom">
-                <div class="container">
-
-                    <!-- [F] Informações de Conta e Pedidos -->
-                    <ul class="nav navbar-nav">
-                        <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> 15</span></p></li>
-                        <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ 00,00</span></p></li>
-                    </ul>
-
-                    <!-- [I] Funções de Conta -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><button type="button" class="btn btn-danger" style="margin-top:7px;">Encerrar Conta</button></li>
-                    </ul>
-
-                </div>
-            </nav>
 
 
             <!-- [S] Carrega JQuery -->
