@@ -1,0 +1,60 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sgr.bean;
+
+/**
+ *
+ * @author WASHINGTON
+ */
+public class ItemBean {
+    private int codigo;
+    private String nome;
+    private String composicao;
+    private String tipo;
+    private double preço;
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getComposicao() {
+        return composicao;
+    }
+
+    public void setComposicao(String composicao) {
+        this.composicao = composicao;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public double getPreço() {
+        return preço;
+    }
+
+    public void setPreço(double preço) {
+        this.preço = preço;
+    }
+    
+    
+}

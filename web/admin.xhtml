@@ -22,115 +22,70 @@
 
     </h:head>
     <body>
-          <h:form id="frmPrincipal"  >
+        <h:form id="frmPrincipal"  >
 
-        <!-- [I] Painel Principal -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
+            <!-- [I] Painel Principal -->
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
 
-                    <!-- [I] Logo -->                
-                    <a class="navbar-brand" href="#">
-                        <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                             margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
-                    </a>
+                        <!-- [I] Logo -->                
+                        <a class="navbar-brand" href="#">
+                            <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
+                                 margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
+                        </a>
 
-                    <!-- [F] Exibição do Usuário -->
-                    <p class="navbar-text" >Olá, <b>#{funcionarioController.funcionario.nome}</b>!</p>     
-                    <p class="navbar-text">Mesa <span class="badge"></span></p>
-                </div>
+                        <!-- [F] Exibição do Usuário -->
+                        <p class="navbar-text" >Olá, <b>#{funcionarioController.funcionario.nome}</b>!</p>     
+                        <p class="navbar-text">Mesa <span class="badge"></span></p>
+                    </div>
 
-                <!-- [F] Informações -->
-                <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
-                                                                        aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock">#{funcionarioController.currentHour}</span></b></p>               
+                    <!-- [F] Informações -->
+                    <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
+                                                                            aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock">#{funcionarioController.currentHour}</span></b></p>               
 
-                <!-- [S] Script Hora -->
-
-
-
-                <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
-                                                                       aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate">#{funcionarioController.currentDate}</span></b></p>
-          <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
-
-                    <!-- [I] Configurações -->
-                    <li><div class="dropdown" style="margin-top:8px; margin-right:5px;">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                Configurações
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Dados Cadastrais</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Senha</a></li>
-                            </ul>
-                        </div></li>
+                    <!-- [S] Script Hora -->
 
 
-                    <!-- [I] Logout Button -->
-                    <li><h:commandButton value="Sair"  actionListener="#{funcionarioController.doLogout()}" class="btn btn-default navbar-btn"></h:commandButton></li>
-                </ul>       
 
-            </div>                 
-        </nav>
+                    <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
+                                                                           aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate">#{funcionarioController.currentDate}</span></b></p>
+                    <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
 
-        <!-- [I] Fim do Painel Principal -->
+                        <!-- [I] Configurações -->
+                        <li><div class="dropdown" style="margin-top:8px; margin-right:5px;">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                    Configurações
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Dados Cadastrais</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Senha</a></li>
+                                </ul>
+                            </div></li>
+                        <li><h:commandButton value="Sair"  actionListener="#{funcionarioController.doLogout()}" class="btn btn-default navbar-btn"></h:commandButton></li>
+                    </ul>       
 
-      
-
-
-            <!-- [I] Fim do Painel Principal -->
-
-            <!-- corpo da pagina -->
+                </div>                 
+            </nav>
             <div>
 
             </div>
             <div  style="margin-left: 10px;margin-top: 5%" >
 
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/gerenciarFuncionarios.jsf')}" value="Gerenciar Colaboradores"  >
+                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/gerenciarFuncionarios.jsf')}" value="Gerenciar Colaboradores"  />
+                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Cadastro de Cliente"  />
+                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/cadastroItens.jsf')}" value="Cadastro de Produtos"  />
 
-                </h:commandButton> 
-                
-                     <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Cadastro de Cliente"  />
 
-                    
 
             </div>
 
-
-            <!-- fim corpo da pagina -->
-
-            <!-- [I] Display Principal -->
-
-
-            <!-- [I] Footer -->
-
-
-        <!-- [I] Display Principal -->
-
-
-        <!-- [I] Footer -->
-        <nav class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
-
-                <!-- [F] Informações de Conta e Pedidos -->
-                <ul class="nav navbar-nav">
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-list" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total de Pedidos:</b><span class="ft-values"> 15</span></p></li>
-                    <li><p class="navbar-text" ><span class="glyphicon glyphicon-usd" aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b>Total da Conta:</b><span class="ft-values"> R$ 00,00</span></p></li>
-                </ul>
-
-                <!-- [I] Funções de Conta -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li><button type="button" class="btn btn-danger" style="margin-top:7px;">Encerrar Conta</button></li>
-                </ul>
-
-            </div>
-        </nav>
-
-
-        <!-- [S] Carrega JQuery -->
-        <script src="js/jquery-2.1.3.js"></script>
-        <!-- [S] Carrega Plugins Avulsos -->		
-        <script src="js/bootstrap.js"></script>
-           </h:form>
+            <!-- [S] Carrega JQuery -->
+            <script src="js/jquery-2.1.3.js"></script>
+            <!-- [S] Carrega Plugins Avulsos -->		
+            <script src="js/bootstrap.js"></script>
+        </h:form>
 
     </body>
 
