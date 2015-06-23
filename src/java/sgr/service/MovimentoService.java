@@ -90,4 +90,28 @@ public class MovimentoService {
         return movimentos;
     }
 
+      public List<MovimentoBean> listarItensCancelados(String pNome) {
+
+        List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
+        QueryBuilder query = new QueryBuilder();
+
+        query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Cancelamento", QueryType.text);
+     
+        MovimentoDAO movimentoDAO = new MovimentoDAO();
+
+        try {
+            System.out.println("[movimentoservice] listando movimentos....");
+            movimentos = movimentoDAO.listaMovimentos(query);
+
+        } catch (SQLException ex) {
+            System.out.println("erro ao tentar listar movimentos: " + ex.getSQLState());
+            Logger.getLogger(MovimentoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return movimentos;
+    }
+
+    
+    
 }

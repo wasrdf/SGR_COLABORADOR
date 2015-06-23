@@ -23,13 +23,10 @@
 
     </h:head>
     <body>
-        
         <ui:include src="topo.xhtml" />
-        
-        
         <h:form id="frmPrincipal" rendered="#{itemBeanController.tela == 0}">
 
-             
+
             <div  style="margin-left: 10px;margin-top: 5%" >
                 <p:inputText value="#{itemBeanController.filtro}"  />
                 <p:commandButton    class="btn btn-default navbar-btn"   action="#{itemBeanController.listarItens()}" value="Buscar" update="item"  />
@@ -72,46 +69,55 @@
 
 
                 </h:dataTable>
-        </div>
+            </div>
 
 
         </h:form>
-        
+
         <h:form style="margin-top: 5%;background-color: white;margin-left: 3%;width: 80%" id="frmDetalhe" rendered="#{itemBeanController.tela == 1}" >
-            <h:panelGrid style="margin-left: 10px" columns="1">
-            <h:outputText value="Nome" />
-            <p:inputText  size="30" requiredMessage="Nome obrigatório" value="#{itemBeanController.itemBean.nome}" />
-            
-            <h:panelGrid>
-            <h:outputText value="Composição" />
-            <p:inputTextarea maxlength="199" cols="50" rows="10" value="#{itemBeanController.itemBean.composicao}" />
+            <h:panelGrid columns="2">
+
+                <h:panelGrid style="margin-left: 10px" columns="1">
+                    <h:panelGrid columns="1">
+                        <h:outputText value="Nome" />
+                        
+
+                        <p:inputText  size="30" requiredMessage="Nome obrigatório" value="#{itemBeanController.itemBean.nome}" />
+                    
+
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <h:outputText value="Composição" />
+                        <p:inputTextarea maxlength="199" cols="50" rows="10" value="#{itemBeanController.itemBean.composicao}" />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="1">
+                        <h:outputText value="Tipo de pratos já cadastrados" />
+
+                        <p:selectOneMenu value="#{itemBeanController.itemBean.tipo}" >
+                            <f:selectItem itemValue="#{null}" itemLabel="Nenhum" />
+                            <f:selectItems var="itemTp" value="#{itemBeanController.tiposDePrato}" itemLabel="#{itemTp.tipo}" itemValue="#{itemTp.tipo}" />
+
+                        </p:selectOneMenu> 
+
+                    </h:panelGrid>
+                    <h:outputText value="Nome" />
+                    <p:inputText  value="#{itemBeanController.itemBean.preço}" >
+                        <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
+                    </p:inputText>
+
+                    <h:panelGrid columns="2" >
+                        <p:commandButton    class="btn btn-success navbar-btn"   action="#{itemBeanController.salvar()}" value="Salvar" ajax="false"  />
+                        <p:commandButton    class="btn btn-danger navbar-btn"   action="#{itemBeanController.deletar()}" value="Deletar" ajax="false"  />
+                        <p:commandButton    class="btn btn-default navbar-btn"   actionListener="#{itemBeanController.mudarTela(0)}" ajax="false" value="Voltar"   />
+                    </h:panelGrid>
+                </h:panelGrid>
+
             </h:panelGrid>
-            
-            <h:panelGrid columns="1">
-            <h:outputText value="Tipo de pratos já cadastrados" />
-            
-            <p:selectOneMenu value="#{itemBeanController.itemBean.tipo}" >
-                <f:selectItem itemValue="#{null}" itemLabel="Nenhum" />
-                <f:selectItems var="itemTp" value="#{itemBeanController.tiposDePrato}" itemLabel="#{itemTp.tipo}" itemValue="#{itemTp.tipo}" />
-            
-            </p:selectOneMenu> 
-            
-            </h:panelGrid>
-            <h:outputText value="Nome" />
-            <p:inputText  value="#{itemBeanController.itemBean.preço}" >
-                  <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
-            </p:inputText>
-            
-            <h:panelGrid columns="2" >
-            <p:commandButton    class="btn btn-success navbar-btn"   action="#{itemBeanController.salvar()}" value="Salvar" ajax="false"  />
-            <p:commandButton    class="btn btn-danger navbar-btn"   action="#{itemBeanController.deletar()}" value="Deletar" ajax="false"  />
-            <p:commandButton    class="btn btn-default navbar-btn"   actionListener="#{itemBeanController.mudarTela(0)}" ajax="false" value="Voltar"   />
-            </h:panelGrid>
-            </h:panelGrid>
-                  <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+            <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
         </h:form>
 
-     
+
     </body>
 
 </html>

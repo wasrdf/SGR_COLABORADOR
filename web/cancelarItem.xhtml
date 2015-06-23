@@ -25,11 +25,7 @@
     </h:head>
 
     <h:body>
-        <p:dialog style="margin-left: 48%;margin-top: 20%" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-            <img src="img/ajax-loader.gif" class="img-responsive"></img>	
-        </p:dialog>
-        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
+       
 
         <!-- [I] Painel Principal -->
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -109,118 +105,45 @@
             </div>                 
         </nav>
 
-        <!-- [I] Fim do Painel Principal -->
+          <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
+            <h:panelGrid width="100%" >
 
-        <!-- [I] Display Principal -->
-        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}">
-            <div class="container">
-                <div class="row clearfix">
-                    <div class="col-md-6 column">
-
-
-                        <div class="panel panel-default">
-                            <h:panelGrid style="margin-top: 10px" columns="3">
-                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/caixa.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Caixa')}"  value="Voltar pra tela principal"  />
-                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/cozinha.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Cozinha')}"  value="Voltar pra tela principal"  />
-                                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/waiter.jsf')}" rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}"  value="Voltar pra tela principal"  />
-
-                                
-                                
-                            </h:panelGrid>  
-
-                            <h:panelGrid columns="3">
-                                <h:outputText value="Buscar por nome do cliente" />
-                                <p:inputText value="#{funcionarioController.filtroPedido}" />
-                                <p:commandButton value="Atualizar" update="movimento" actionListener="#{funcionarioController.carregarPedidos()}"  />
-                                
-                            </h:panelGrid>
-                            
-                            <div class="panel-body">
-                                <div class="row clearfix">
-                                    <div class="table-responsive">
-                                        <p:dataTable id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaMovimento}">
-
-                                            
-                                            <p:column headerText="Cliente">
-                                                <h:outputText style="color:#D45744;" value="#{movimento.clienteNome}" />
-                                            </p:column>
-                                           
-                                            <p:column headerText="Item">
-                                                <h:outputText value="#{movimento.item}" />
-                                            </p:column>
-
-                                            <p:column headerText="Quantidade">
-                                                <h:outputText value="#{movimento.quantidade}" />
-                                            </p:column>  
-
-                                            <p:column headerText="Preço">
-                                                <p:outputLabel value="#{movimento.preco}"  style="margin-left: 10px" >
-                                                    <f:convertNumber currencyCode="R$" minFractionDigits="2" locale="pt-br"  />
-                                                </p:outputLabel>
-                                            </p:column>    
-
-                                            <p:column headerText="Status do Item">
-                                                <h:outputText value="#{movimento.itemStatus}" />
-                                            </p:column>
+                <h:panelGrid  columns="1" width="100%"  style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;height: 220px" >
+                    <p:commandButton style="width: 200px;margin-left: 1%" value="Voltar" actionListener="#{funcionarioController.navegarPara('/caixa.jsf')}" />
+                    <p:poll interval="30" listener="#{funcionarioController.listarItensCancelamento()}" update="mesas" />
+                    <p:dataTable style="text-align: center" id="mesas" tableStyleClass="table table-striped" emptyMessage="Nenhuma solicitação encontrada." var="mesas" value="#{funcionarioController.listaItensCancelados}">
 
 
-                                            <p:column headerText="Detalhe">
-                                                <p:commandButton style="text-align: left" ajax="false" value="Ver" immediate="true" actionListener="#{funcionarioController.pedidoSelecionado(movimento)}" icon="ui-icon-search" update=":frmPrincipal :frmDetalhe" />
-                                            </p:column>
+                        <p:column headerText="Mesa">
+                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.mesaNumero}" />
+                        </p:column>
+                        <p:column headerText="Cliente">
+                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.clienteNome}" />
+                        </p:column>
+
+                        <p:column headerText="Solicitação de Cancelamento">
+                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.itemStatus}" />
+                        </p:column>
+                        <p:column headerText="Item">
+                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.item}" />
+                        </p:column>
 
 
-                                        </p:dataTable>
-                                    </div>
-                                </div>
-                            </div>
+                        <p:column headerText="Visualizar Itens">
+                            <p:commandButton ajax="false" class="btn-default navbar-default" update="mesas" value="Cancelar Item" actionListener="#{funcionarioController.cancelarItem(mesas)}" />
+                        </p:column>
 
 
-                        </div>
+                    </p:dataTable>
 
-                        <!-- [I][P] Painel Direito -->    
-                    </div>
-                    <div id="abId0.5800432859169298" class="col-md-6 column">
-                        <div class="row clearfix">
 
-                            <div class="col-md-6 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Recomendações</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        -
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Promoções</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        -
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row clearfix">
-                            <div class="col-md-12 column">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Populares</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        -
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>                
+                </h:panelGrid>
+
+            </h:panelGrid>
+
         </h:form>
-        <!-- -->   
 
+        
         <!--Formulario pedido detalhe-->
         <h:form id="frmDetalhe" rendered="#{funcionarioController.tela == 1}" >
 

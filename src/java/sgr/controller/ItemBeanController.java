@@ -5,14 +5,30 @@
  */
 package sgr.controller;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.servlet.http.Part;
+import org.primefaces.model.StreamedContent;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.model.DefaultStreamedContent;
 import sgr.bean.ItemBean;
 import sgr.dao.ItemBeanDAO;
 import sgr.service.ItemBeanService;
@@ -29,8 +45,14 @@ public class ItemBeanController {
     List<ItemBean> tiposDePrato = new ArrayList<ItemBean>();
     String filtro = "";
     boolean obrigatorio = true;
- 
+    
 
+   
+    
+    public ItemBeanController() {
+         
+    }
+    
     public void salvar() {
         obrigatorio = true;
         ItemBeanService itemBeanService = new ItemBeanService();
@@ -62,6 +84,7 @@ public class ItemBeanController {
     }
 
     public void selecionarItem(ItemBean pItemBean) {
+        System.out.println("entrou no metodo");
         itemBean = pItemBean;
         ItemBeanDAO itemBeanDAO = new ItemBeanDAO();
         tiposDePrato = itemBeanDAO.listarItemTipoDistinct();
@@ -135,6 +158,5 @@ public class ItemBeanController {
     public void setObrigatorio(boolean obrigatorio) {
         this.obrigatorio = obrigatorio;
     }
-
     
 }

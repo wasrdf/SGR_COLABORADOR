@@ -54,6 +54,7 @@ public class FuncionarioController {
     ContaItemBean contaItemBean = new ContaItemBean();
     List<MovimentoBean> listaPedidosCozinha = new ArrayList<MovimentoBean>();
     List<MovimentoBean> listaPedidosFechados = new ArrayList<MovimentoBean>();
+    List<MovimentoBean> listaItensCancelados = new ArrayList<MovimentoBean>();
     List<TableBean> listaMesasAberto = new ArrayList<TableBean>();
     TableBean tableBean = new TableBean();
     double total = 0;
@@ -68,7 +69,27 @@ public class FuncionarioController {
         DateFormat dfHour = new SimpleDateFormat("HH:mm");
         CurrentDate = df.format(dataAtual);
         CurrentHour = dfHour.format(dataAtual);
-
+        listarItensCancelamento();
+        listarItensProntosESolicitados();
+        
+    }
+    
+    
+    
+    public void listarItensCancelamento() {
+      MovimentoService movimentoService = new MovimentoService();
+      listaItensCancelados = movimentoService.listarItensCancelados("");
+    }
+    
+    //aqui o caixa ou o gerente altera o status do item de Cancelamento para CANCELADO
+    public void cancelarItem(MovimentoBean pMovimentoBean) {
+        ContaItemDAO contaItemDAO = new ContaItemDAO();
+        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+        contaItemBean.setStatus("CANCELADO");
+        contaItemDAO.alterarItemStatus(contaItemBean);
+        listarItensCancelamento();
+    
+        
     }
 
     public void alterarStatusItem(MovimentoBean pMovimentoBean) {
@@ -178,6 +199,8 @@ public class FuncionarioController {
 
     }
 
+    
+    
     public void recarregarMesas() {
         TableBeanService tableBeanService = new TableBeanService();
         listaMesasAberto = tableBeanService.listarMesasAbertas();
@@ -255,6 +278,14 @@ public class FuncionarioController {
 
     }
 
+    public List<MovimentoBean> getListaItensCancelados() {
+        return listaItensCancelados;
+    }
+
+    public void setListaItensCancelados(List<MovimentoBean> listaItensCancelados) {
+        this.listaItensCancelados = listaItensCancelados;
+    }
+    
     public void listarFuncionario() {
 
         FuncionarioService funcionarioService = new FuncionarioService();
