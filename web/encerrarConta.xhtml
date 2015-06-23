@@ -69,10 +69,10 @@
 
         <h:form style="margin-top: 5%;margin-left: 3%" id="frmDetalhe" rendered="#{funcionarioController.tela == 1}">
 
-                <h:panelGrid border="0" columns="1" width="300px" style="text-align: left"   >
+            <h:panelGrid border="0" columns="1" width="300px" style="text-align: left"   >
 
-                    <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
-                </h:panelGrid>
+                <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
+            </h:panelGrid>
             <h:panelGrid  id="cupom" style="background-color: #F8F8F8" >
 
                 <h:panelGrid>
@@ -83,7 +83,7 @@
                     <h:outputText value="Número: #{movimento.clienteCodigo}" />
                     ------------------------------------------------------------
                 </h:panelGrid>
-                
+
                 <h:dataTable  style="background-color: white;width: 40%" var="movimento" value="#{funcionarioController.listaMovimento}" id="movimento">
 
                     <h:column  >
@@ -105,7 +105,33 @@
                         <f:facet name="header">
                             <h:outputText style="margin-right: 50px"  value="Status"/>
                         </f:facet>
-                        <h:outputText  value="#{movimento.itemStatus}"/>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
+                            <h:outputText style="color: red;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />
+                        </p:outputPanel>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
+                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
+                            <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
+                            <h:outputText style="color: #28a4c9;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
+                            <h:outputText style="color: blue;background-color: #888;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+
+                      <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
+                            <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+                
+
+
                     </h:column>
 
                     <h:column>
@@ -116,7 +142,7 @@
                             <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
                         </h:outputText>
                     </h:column>
-                    
+
 
                 </h:dataTable>
 
@@ -127,20 +153,20 @@
                         <f:convertNumber locale="pt_BR" pattern="#,##0.00" maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14"  />
                     </h:outputText>    
                 </h:panelGrid>
-                 <ui:insert name="cupom" />  
+                <ui:insert name="cupom" />  
             </h:panelGrid>
-               
-            
+
+
             <h:panelGrid columns="2" >
-                    <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Encerrar Conta" actionListener="#{funcionarioController.encerrarConta()}" />
+                <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Encerrar Conta" actionListener="#{funcionarioController.encerrarConta()}" />
 
-                   <p:commandButton class="btn btn-success navbar-btn" ajax="false" value="Imprimir" >
-                        <p:printer target="cupom" />
-                    </p:commandButton>
+                <p:commandButton class="btn btn-success navbar-btn" ajax="false" value="Imprimir" >
+                    <p:printer target="cupom" />
+                </p:commandButton>
 
-                </h:panelGrid>
-                <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
-          
+            </h:panelGrid>
+            <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+
 
         </h:form>
 

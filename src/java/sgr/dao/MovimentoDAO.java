@@ -47,7 +47,7 @@ public class MovimentoDAO {
             movimento.setQuantidade(rs.getInt("quantidade"));
             movimento.setPreco(rs.getDouble("preco"));
             movimento.setContaItemCodigo(rs.getInt("conta_item_codigo"));
-            
+            movimento.setData(rs.getDate("data"));            
             movimentos.add(movimento);
         }
         System.out.println("[MOVIMENTODAO] fim do while...");
@@ -56,7 +56,5 @@ public class MovimentoDAO {
         conn.close();
         return movimentos;
     }
-    
- 
     
 }

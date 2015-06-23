@@ -23,73 +23,14 @@
 
     </h:head>
     <body>
-        <h:form id="frmPrincipal"  >
-
-            <!-- [I] Painel Principal -->
-            <nav class="navbar navbar-default navbar-fixed-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-
-                        <!-- [I] Logo -->                
-                        <a class="navbar-brand" href="#">
-                            <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 100px; 
-                                 margin-top:-20px; background-color:#F8F8F8;" class="img-rounded"></img>
-                        </a>
-
-                        <!-- [F] Exibição do Usuário -->
-                        <p class="navbar-text" >Olá, <b>#{funcionarioController.funcionario.nome}</b>!</p>     
-                        <p class="navbar-text">Mesa <span class="badge"></span></p>
-                    </div>
-
-                    <!-- [F] Informações -->
-                    <p class="navbar-text" style="margin-left:100px;"><span class="glyphicon glyphicon-time" 
-                                                                            aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicclock">#{funcionarioController.currentHour}</span></b></p>               
-
-                    <!-- [S] Script Hora -->
-
-
-
-                    <p class="navbar-text" style="margin-left:20px;"><span class="glyphicon glyphicon-calendar"
-                                                                           aria-hidden="true" style="color:#D45744; margin-right:5px;"></span><b><span id="basicdate">#{funcionarioController.currentDate}</span></b></p>
-                    <ul class="nav navbar-nav navbar-right" style="margin-right:20px;">
-
-                        <!-- [I] Configurações -->
-                        <li><div class="dropdown" style="margin-top:8px; margin-right:5px;">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                    Configurações
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Dados Cadastrais</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Senha</a></li>
-                                </ul>
-                            </div></li>
-
-
-                        <!-- [I] Logout Button -->
-                        <li><h:commandButton value="Sair"  actionListener="#{funcionarioController.doLogout()}" class="btn btn-default navbar-btn"></h:commandButton></li>
-                    </ul>       
-
-                </div>                 
-            </nav>
-
-            <!-- [I] Fim do Painel Principal -->
-
-
-
-
-            <!-- [I] Fim do Painel Principal -->
-
-            <!-- corpo da pagina -->
-            <div>
-
-            </div>
+        <ui:include src="topo.xhtml" />
+        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
             <div  style="margin-left: 10px;margin-top: 5%" >
 
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Efetuar Recebimento"  />
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/pedidos.jsf')}" value="Gerar Relatório de Vendas"  />
+                <p:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Efetuar Recebimento"  />
+                <p:commandButton ajax="false"    class="btn btn-default navbar-btn"   action="#{funcionarioController.mudarTela(1)}" value="Gerar Relatório de Vendas"  />
                
-                <h:commandButton    class="btn btn-danger navbar-btn"   action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Conta"  />
+                <p:commandButton    class="btn btn-danger navbar-btn"   action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Conta"  />
 
 
             </div>
@@ -124,16 +65,50 @@
 
 
         </h:dataTable>
-
-
-
-
-
-
-        <script src="js/jquery-2.1.3.js"></script>
-        <!-- [S] Carrega Plugins Avulsos -->		
-        <script src="js/bootstrap.js"></script>
     </h:form>
+        
+        <h:form style="margin-top: 5%" rendered="#{funcionarioController.tela == 1}">
+          
+            <p:commandButton ajax="false"    class="btn btn-default navbar-btn"   action="#{funcionarioController.mudarTela(0)}" value="Voltar"  />
+            <h:panelGrid columns="1" style="background-color: white;width: 100%">
+               
+                <h:panelGrid columns="2">
+                    <h:outputText value="Gerar relatório por data" />
+                    <p:inputMask mask="99/99/9999" style="margin-left: 10px"  value="#{funcionarioController.dataFiltro}" >
+                        
+                    </p:inputMask>
+                    <p:commandButton update="relatorio" value="Gerar Relatório" actionListener="#{funcionarioController.gerarRelatorios()}" />
+                </h:panelGrid>
+                
+                
+                <p:dataTable emptyMessage="Nenhuma informação encontrada" var="relatorio" id="relatorio" style="width: 100%" value="#{funcionarioController.relatorios}" >
+                    <p:column headerText="Cliente" >
+                        <h:outputText value="#{relatorio.clienteNome}" />
+                    </p:column>
+                
+                     <p:column headerText="Quantidade" >
+                         <h:outputText value="#{relatorio.quantidade}" />
+                    </p:column>
+                    
+                     <p:column headerText="Preço" >
+                         <h:outputText value="#{relatorio.preco}" />
+                    </p:column>
+                
+                        
+                    <p:column headerText="Data" >
+                        <h:outputText value="#{relatorio.data}" />
+                    </p:column>
+                
+                </p:dataTable>
+                
+                
+            </h:panelGrid>
+            
+        
+        
+        
+        </h:form>  
+        
     </body>
 
 </html>

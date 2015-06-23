@@ -3,6 +3,7 @@ package sgr.controller;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +33,8 @@ import sgr.service.TableBeanService;
 @SessionScoped
 @ManagedBean(name = "funcionarioController")
 public class FuncionarioController {
-
+        
+    
     FuncionarioService funcionarioService = new FuncionarioService();
     List<FuncionarioBean> listFuncionario;
     FuncionarioBean funcionario;
@@ -55,14 +57,17 @@ public class FuncionarioController {
     List<MovimentoBean> listaPedidosCozinha = new ArrayList<MovimentoBean>();
     List<MovimentoBean> listaPedidosFechados = new ArrayList<MovimentoBean>();
     List<MovimentoBean> listaItensCancelados = new ArrayList<MovimentoBean>();
+    List<MovimentoBean> relatorios = new ArrayList<MovimentoBean>();
     List<TableBean> listaMesasAberto = new ArrayList<TableBean>();
     TableBean tableBean = new TableBean();
     double total = 0;
     DecimalFormat df = new DecimalFormat("#,###.00");
     String valorTotal = "";
-
     String statusSelecionado = "";
-
+    Date dataFiltro;
+    String dataStringFiltro = "";
+    
+    
     public FuncionarioController() {
         Date dataAtual = Calendar.getInstance().getTime();
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -92,6 +97,15 @@ public class FuncionarioController {
         
     }
 
+     public void emPraparo(MovimentoBean pMovimentoBean) {
+        ContaItemDAO contaItemDAO = new ContaItemDAO();
+        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+        contaItemBean.setStatus("Em Preparo");
+        contaItemDAO.alterarItemStatus(contaItemBean);
+        listarItensProntosESolicitados();
+    }
+    
+    
     public void alterarStatusItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
@@ -114,7 +128,7 @@ public class FuncionarioController {
     public void alterarStatusItemEntregue(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
-        if (pMovimentoBean.getItemStatus().equals("Solicitado")) {
+        if ((pMovimentoBean.getItemStatus().equals("Solicitado")) ||(pMovimentoBean.getItemStatus().equals("Em Preparo")) ) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Você não pode entregar este item pois o mesmo ainda não está pronto.", ""));
         } else {
             contaItemBean.setStatus("Entregue");
@@ -241,10 +255,11 @@ public class FuncionarioController {
     public void encerrarConta() {
         SessionBeanService sessionBeanService = new SessionBeanService();
         MovimentoService movimentoService = new MovimentoService();
+        TableBeanService tableBeanService = new TableBeanService();
         boolean status = false;
         listaMovimento = movimentoService.listarMovimentosPorMesa(tableBean.getNumero());
         for (int i = 0; i < listaMovimento.size(); i++) {
-            if (listaMovimento.get(i).getItemStatus().equals("Solicitado")) {
+            if (!listaMovimento.get(i).getItemStatus().equals("Entregue")) {
                 status = false;
 
             } else {
@@ -257,7 +272,13 @@ public class FuncionarioController {
             
             sessionBean.setCodigo(listaMovimento.get(0).getContaCodigo());
             sessionBean.setStatus(false);
+            
+            tableBean.setNumero(listaMovimento.get(0).getMesaNumero());
+            tableBean.setStatus(false);
+            tableBeanService.fecharMesa(tableBean);          
             System.out.println("Numero da conta:" + listaMovimento.get(0).getContaCodigo());
+            System.out.println("Numero Mesa:" + listaMovimento.get(0).getMesaNumero());
+         
             sessionBeanService.encerrarConta(sessionBean);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "A conta foi encerrada com sucesso.", ""));
 
@@ -327,6 +348,20 @@ public class FuncionarioController {
             funcionarioNovo = new FuncionarioBean();
 
         }
+    }
+     
+    
+    //metodo gerar relatorios de vendas por data
+    public void gerarRelatorios() {
+        MovimentoService movimentoService = new MovimentoService();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+            dataFiltro = simpleDateFormat.parse(dataStringFiltro);
+        } catch (ParseException ex) {
+            Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Data" + simpleDateFormat.format(dataFiltro));
+        //relatorios = movimentoService.gerarRelatorios();
     }
 
     public void pedidoSelecionado(MovimentoBean pMovimento) {
@@ -558,4 +593,28 @@ public class FuncionarioController {
         this.valorTotal = valorTotal;
     }
 
+    public List<MovimentoBean> getRelatorios() {
+        return relatorios;
+    }
+
+    public void setRelatorios(List<MovimentoBean> relatorios) {
+        this.relatorios = relatorios;
+    }
+
+    public Date getDataFiltro() {
+        return dataFiltro;
+    }
+
+    public void setDataFiltro(Date dataFiltro) {
+        this.dataFiltro = dataFiltro;
+    }
+
+    public String getDataStringFiltro() {
+        return dataStringFiltro;
+    }
+
+    public void setDataStringFiltro(String dataStringFiltro) {
+        this.dataStringFiltro = dataStringFiltro;
+    }
+   
 }

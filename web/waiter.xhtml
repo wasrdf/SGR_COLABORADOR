@@ -30,8 +30,7 @@
 
                 <h:panelGrid  columns="1" width="40%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
 
-                    <h:panelGrid columns="1" cellpadding="5" cellspacing="5"  >
-                        
+                    <h:panelGrid columns="1" cellpadding="5" cellspacing="5"  >                    
                         <p:commandButton class="btn btn-default navbar-btn" style="margin-left: 20px;width: 250px"  value="Cadastro de Clientes" ajax="false" actionListener="#{funcionarioController.navegarPara('/manterCliente.jsf')}" />
                     </h:panelGrid>
                     <br/>
@@ -63,7 +62,7 @@
                 <h:panelGrid columns="5" cellpadding="5" cellspacing="5" style="text-align: center" >
                     <h:outputText style="font-weight: bold" value="Buscar por nome: " />
                     <p:inputText style="margin-left: 10px" value="#{funcionarioController.filtroPedido}" />
-                  
+
                     <p:commandButton class="btn btn-default navbar-default" style="margin-left: 10px" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
                     <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 50%;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
                 </h:panelGrid>
@@ -75,9 +74,9 @@
                 <br/>
                 <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
                 <br/>
-             
+
                 <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
-                
+
                 <p:dataTable   paginator="true" rowsPerPageTemplate="5,10,15" rows="10" style="text-align: center" id="movimento" tableStyleClass="table table-striped" emptyMessage="Nenhuma pedido encontrado." var="movimento" value="#{funcionarioController.listaMovimento}">
 
 
@@ -120,6 +119,12 @@
                         <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
                             <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                         </p:outputPanel>
+
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
+                            <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+
+
                     </p:column>
 
                     <p:column headerText="Alterar status">

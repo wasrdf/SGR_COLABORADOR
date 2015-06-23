@@ -129,13 +129,20 @@
                         <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
                             <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
                         </p:outputPanel>
+                
+                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
+                            <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
+                        </p:outputPanel>
+                
                     </p:column>
 
 
 
                     <p:column headerText="Alterar status">
-                        <p:commandButton  update="movimento" value="Pronto" actionListener="#{funcionarioController.alterarStatusItem(movimento)}" />
+                        <p:commandButton  update="movimento" value="Em Praparo" actionListener="#{funcionarioController.emPraparo(movimento)}" />
+                        <p:commandButton  update="movimento" value="Pronto" actionListener="#{funcionarioController.alterarStatusItem(movimento)}" />                   
                         <p:commandButton  update="movimento" value="Desfazer" actionListener="#{funcionarioController.desfazer(movimento)}" />
+                
                     </p:column>
 
 

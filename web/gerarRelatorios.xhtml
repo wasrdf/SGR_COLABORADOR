@@ -7,7 +7,7 @@
 
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+    <!--Washington-->
     <h:head>
         <title> Sistema de Gestão Restaurante</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
@@ -64,24 +64,35 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Alterar Senha</a></li>
                                 </ul>
                             </div></li>
+
+
+                        <!-- [I] Logout Button -->
                         <li><h:commandButton value="Sair"  actionListener="#{funcionarioController.doLogout()}" class="btn btn-default navbar-btn"></h:commandButton></li>
                     </ul>       
 
                 </div>                 
             </nav>
+
+            <!-- [I] Fim do Painel Principal -->
+
+
+
+
+            <!-- [I] Fim do Painel Principal -->
+
+            <!-- corpo da pagina -->
             <div>
 
             </div>
             <div  style="margin-left: 10px;margin-top: 5%" >
 
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/gerenciarFuncionarios.jsf')}" value="Gerenciar Colaboradores"  />
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Cadastro de Cliente"  />
-                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/cadastroItens.jsf')}" value="Cadastro de Produtos"  />
-              
+                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Efetuar Recebimento"  />
+                <h:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/pedidos.jsf')}" value="Gerar Relatório de Vendas"  />
+               
+                <h:commandButton    class="btn btn-danger navbar-btn"   action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Conta"  />
 
 
             </div>
-
                 <p:poll interval="30" listener="#{funcionarioController.listarItensCancelamento()}" update="item" />
                 <h:dataTable  rendered="#{funcionarioController.listaItensCancelados.size() > 0}" border="1"  style="background-color: white;width: 100%;height: 80px;text-align: center" var="item" value="#{funcionarioController.listaItensCancelados}" id="item">
 
@@ -114,12 +125,15 @@
 
         </h:dataTable>
 
-            <!-- [S] Carrega JQuery -->
-            <script src="js/jquery-2.1.3.js"></script>
-            <!-- [S] Carrega Plugins Avulsos -->		
-            <script src="js/bootstrap.js"></script>
-        </h:form>
 
+
+
+
+
+        <script src="js/jquery-2.1.3.js"></script>
+        <!-- [S] Carrega Plugins Avulsos -->		
+        <script src="js/bootstrap.js"></script>
+    </h:form>
     </body>
 
 </html>
