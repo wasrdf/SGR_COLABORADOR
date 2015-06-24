@@ -1,11 +1,20 @@
-/////
-// FORMULÁRIO LOGIN
-//////////
-
-
-p {
-    color: red;
+@font-face {
+    font-family: roboto-thin;
+    src: url(../fonts/Roboto-Thin.ttf);
 }
+@font-face {
+    font-family: roboto-light;
+    src: url(../fonts/roboto-light.ttf);
+}
+@font-face {
+    font-family: roboto-regular;
+    src: url(../fonts/Roboto-Regular.ttf);
+}
+@font-face {
+    font-family: roboto-medium;
+    src: url(../fonts/Roboto-Medium.ttf);
+}
+
 vertical-center {
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -29,7 +38,6 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-color: white;
-  padding-top: 70px;
 }
 
 .formbg {
@@ -45,40 +53,129 @@ body {
     border-radius: 10px;
 }
 
-.pricetotal {
-    
-    border-bottom: 1px solid #D45744;
-    padding:5px;
-    margin:3px;
-    margin-left:10px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+.sgrc {
+    color:#D45744;
 }
 
-.navpainel-top {
-   border-top: 3px solid #D45744;
+.sgrd {
+    color:#565656;
 }
 
-.navpainel-bottom {
-   border-bottom: 3px solid #D45744;
+.sgr-panel-border {
+    border-bottom: #D45744 solid 4px;
 }
 
-/////
-// FONTES DO SISTEMA
-//////////
-
-@font-face
-{
-   font-family: Roboto;
-   src: url('fonts/roboto-black.eot');
-   src: url('fonts/roboto-black.eot?iefix') format('embedded-opentype'),
-        url('fonts/roboto-black.ttf') format('truetype');
+.sgr-panel-headertext {
+    font-size:20px;
+    font-weight: bold;
 }
-@font-face
-{
-   font-family: "Roboto Light";
-   src: url('fonts/roboto-light.eot');
-   src: url('fonts/roboto-light.eot?iefix') format('embedded-opentype'),
-        url('fonts/roboto-light.ttf') format('truetype');
+
+.sgr-panel-icon {
+    color:#D45744;
+    margin-right:5px;
+    margin-top:5px;
+}
+
+.sgr-panel-icond {
+    color:black;
+}
+
+h5 { color: black; font-family: 'roboto-light', sans-serif; font-size: 20px;}
+h3 { color: #ff4411; font-family: 'roboto-light', sans-serif; font-size: 34px; }
+h2 { color: #D45744; font-family: 'roboto-light', sans-serif; font-size: 24px; }
+
+p { font-family: 'roboto-light'; }
+
+.sgr_p {
+    font-family: 'roboto-light';
+}
+
+.sgr_d {
+    font-family: 'arial';
+}
+
+
+.btn {
+    font-family: 'roboto-light';
+    font-size:14px;
+}
+
+.ads_template {
+    margin-top:15px;
+    margin-right:15px;
+    padding:20px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #EAEAEA;
+    color: white;
+    width:auto;
+    height:130px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font-size:20px;
+    font-family: 'roboto-light', sans-serif;
+    font-weight: bold;
+}
+
+.highlight_content {
+    vertical-align: top;
+    padding-left: 15px;
+}
+
+.highlight_h {
+    font-family: 'roboto-light', sans-serif;
+    font-size: 18px;
+    color: #D45744;
+    font-weight:bold;
+}
+
+.sgr_nocontent {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    font-family: 'roboto-light', sans-serif;
+    color: #D45744;
+}
+
+.ads {
+    margin:10px;
+    border-bottom: 5px solid #D45744;
+    border-top: 5px solid #D45744;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.order_status {
+    text-transform: uppercase;
+    font-size:12px;
+    font-family: 'roboto-light', sans-serif;
+}
+
+.bt_fix {
+padding: 1px 5px;
+font-size: 12px;
+line-height: 1.5;
+border-radius: 3px;
+}
+
+.bt_fix_add {
+padding: 1px 5px;
+font-size: 12px;
+line-height: 1.5;
+border-radius: 3px;
+width:32px;
+}
+
+.sgr_price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #D45744;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+border-width: 0px;
 }
