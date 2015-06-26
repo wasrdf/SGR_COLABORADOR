@@ -35,7 +35,7 @@
                             </div>
                             <div class="panel-body">
                                 <h:commandButton class="btn btn-default" action="#{funcionarioController.navegarPara('/gerenciarFuncionarios.jsf')}" value="Gerenciar Colaboradores"  />
-                                <h:commandButton class="btn btn-default" style="margin-left:5px;" action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Gerenciar Clientes"  />
+                                <h:commandButton class="btn btn-default" style="margin-left:5px;" action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Cadastrar Clientes"  />
                                 <h:commandButton class="btn btn-default" style="margin-top:5px;" action="#{funcionarioController.navegarPara('/cadastroItens.jsf')}" value="Gerenciar Cardápio"  />
                             </div>
                         </div>
@@ -68,15 +68,11 @@
                                                 <p:commandButton ajax="false" class="btn btn-danger btn-xs" update="item" value="Cancelar Item" actionListener="#{funcionarioController.cancelarItem(item)}" />
                                             </p:column>
 
-
                                         </p:dataTable>
                                     </div>
                                 </div>
                             </div>
-                        </div>                     
-
-
-
+                        </div>                  
                     </div>
                 </h:form>
             </div>

@@ -33,10 +33,11 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"/></span>
+                                        <p:inputText placeholder="Pesquisar por..." class="form-control" style="width:auto;height:32px;" value="#{funcionarioController.filtroDeFuncionario}" />                                   
                                         <span class="input-group-btn">
                                             <p:commandButton class="btn btn-default btn-xs" value="Buscar" actionListener="#{funcionarioController.listarFuncionario()}" update="lista" />
                                         </span>
-                                        <p:inputText placeholder="Pesquisar por..." class="form-control" style="width:auto;height:32px;" value="#{funcionarioController.filtroDeFuncionario}" />                                   
                                     </div>
                                 </div>
                                 <div class="col-lg-9">
@@ -154,8 +155,8 @@
                                 <br></br>
                                 <p:separator/>
                                 <br></br>
-                                
-                                
+
+
                             </div>                       
 
                             <p:commandButton ajax="false"  class="btn btn-success btn-xs" style="margin-left: 5px;float:right;" value="Criar Funcionário" 

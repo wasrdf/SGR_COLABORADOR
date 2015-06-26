@@ -1,15 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-
-      xmlns:p="http://primefaces.org/ui"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
-        <title> Sistema de Gestão Restaurante</title>
+        <title>SGR | Gerência</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <!-- Carrega Bootstrap e CSS Extra -->
@@ -20,104 +17,103 @@
         <script src="js/jquery-2.1.3.js"></script>
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
-
     </h:head>
-    <body>
+
+    <h:body style="padding-top: 70px;">
         <ui:include src="topo.xhtml" />
-        <h:form id="frmPrincipal" rendered="#{itemBeanController.tela == 0}">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5><i class="fa fa-cutlery sgr-panel-icon" style="font-size:14px;"/>Cardápio</h5>
+                    </div>
+                    <div class="panel-body">
 
+                        <h:form id="frmPrincipal" rendered="#{itemBeanController.tela == 0}">
 
-            <div  style="margin-left: 10px;margin-top: 5%" >
-                <p:inputText value="#{itemBeanController.filtro}"  />
-                <p:commandButton    class="btn btn-default navbar-btn"   action="#{itemBeanController.listarItens()}" value="Buscar" update="item"  />
-                <p:commandButton    class="btn btn-default navbar-btn"   action="#{itemBeanController.novoItem()}" value="Novo Produto" ajax="false"  />
-                <p:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/admin.jsf')}" value="Voltar" ajax="false"  />
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"/></span>
+                                        <p:inputText placeholder="Pesquisar por..." class="form-control" style="width:auto;height:32px;" value="#{itemBeanController.filtro}" />
+                                        <span class="input-group-btn">
+                                            <p:commandButton class="btn btn-default btn-xs" value="Buscar" actionListener="#{itemBeanController.listarItens()}" update="item" />
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <p:commandButton class="btn btn-default btn-xs" value="Cadastrar Novo Item" actionListener="#{itemBeanController.novoItem()}" ajax="false"/>                    
+                                </div>
+                            </div>
+                            <div style="padding-bottom: 30px;">
+                            </div>
+                            <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
+                                <div class="table-responsive">
+                                    <p:dataTable  tableStyleClass="table table-striped sgr_p"  var="item" value="#{itemBeanController.listaItem}" id="item" emptyMessage="Nenhum item encontrado.">
+                                        <p:column headerText="ID" style="text-align:center;">
+                                            <h:outputText value="#{item.codigo}"/>
+                                        </p:column> 
+                                        <p:column headerText="Nome" style="text-align:left;">
+                                            <i class="fa fa-edit" style="margin-right:5px;"/>
+                                            <p:commandLink ajax="false" actionListener="#{itemBeanController.selecionarItem(item)}" class="highlight_h" style="font-size:16px;"  value="#{item.nome}"/>
+                                        </p:column>
+                                        <p:column headerText="Tipo" style="text-align:center;">
+                                            <h:outputText value="#{item.tipo}"/>
+                                        </p:column>
+                                        <p:column headerText="Preço" style="text-align:center;">
+                                            R$ <b>
+                                                <h:outputText style="text-align: right"  value="#{item.preço}">
+                                                    <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>
+                                                </h:outputText>
+                                            </b>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div style="padding-bottom: 30px;">
+                            </div>
+                            <p:commandButton    class="btn btn-default btn-xs "   action="#{funcionarioController.navegarPara('/admin.jsf')}" value="Voltar" ajax="false"  />
+                        </h:form>
 
-                <h:dataTable  style="background-color: white;width: 40%" var="item" value="#{itemBeanController.listaItem}" id="item">
+                        <h:form id="frmDetalhe" rendered="#{itemBeanController.tela == 1}">
+                            <p:commandButton class="btn btn-default btn-xs" actionListener="#{itemBeanController.mudarTela(0)}" ajax="false" value="Voltar"/>
+                            <p:separator/>
+                            <h:messages class="alert alert-warning" showDetail="true" layout="table" style="width:100%"/>
 
-                    <h:column  >
-                        <f:facet  name="header">
-                            <h:outputText style="margin-right: 20px" value="ID"/>
-                        </f:facet>
-                        <p:commandLink ajax="false" actionListener="#{itemBeanController.selecionarItem(item)}"  value="#{item.codigo}"/>
-                    </h:column>
-
-
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText style="margin-right: 220px;"  value="Nome"/>
-                        </f:facet>
-                        <p:commandLink ajax="false" actionListener="#{itemBeanController.selecionarItem(item)}"  value="#{item.nome}"/>
-                    </h:column>
-
-
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText style="margin-right: 50px"  value="Tipo"/>
-                        </f:facet>
-                        <p:commandLink ajax="false" actionListener="#{itemBeanController.selecionarItem(item)}"  value="#{item.tipo}"/>
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText  value="Preço"/>
-                        </f:facet>
-                        <h:outputText style="text-align: right"  value="#{item.preço}">
-                            <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
-                        </h:outputText>
-                    </h:column>
-
-
-                </h:dataTable>
+                            <h2 style="margin-left:15px;">Dados do Item</h2>
+                            <div class="form-group col-xs-6">
+                                <label for="name">Nome Completo</label>                              
+                                <p:inputText class="form-control" size="30" requiredMessage="Nome obrigatório" value="#{itemBeanController.itemBean.nome}" />
+                            </div>
+                            <div class="form-group col-xs-3">
+                                <label for="name">Adicionar ao Menu</label>  
+                                <p:selectOneMenu class="form-control" value="#{itemBeanController.itemBean.tipo}" style="padding:3px;width:140px;height:35px;" >
+                                    <f:selectItem itemValue="#{null}" itemLabel="Nenhum" />
+                                    <f:selectItems var="itemTp" value="#{itemBeanController.tiposDePrato}" itemLabel="#{itemTp.tipo}" itemValue="#{itemTp.tipo}" />
+                                </p:selectOneMenu> 
+                            </div>
+                            <div class="form-group col-xs-3">
+                                <label for="name">Preço</label> 
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">R$</span>
+                                    <p:inputText  class="form-control" value="#{itemBeanController.itemBean.preço}" >
+                                        <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
+                                    </p:inputText>                                </div>
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <label for="name">Descrição</label> 
+                                <p:inputTextarea class="form-control" maxlength="199" cols="50" rows="3" value="#{itemBeanController.itemBean.composicao}" />
+                            </div>                    
+                            <div style="padding-bottom: 30px;">
+                            </div>
+                            <p:commandButton class="btn btn-success btn-xs" style="float:right;" action="#{itemBeanController.salvar()}" value="Salvar" ajax="false"  />
+                            <p:commandButton class="btn btn-danger btn-xs" action="#{itemBeanController.deletar()}" value="Deletar Item" ajax="false"  />
+                        </h:form>
+                    </div>
+                </div>
             </div>
+        </div>
 
-
-        </h:form>
-
-        <h:form style="margin-top: 5%;background-color: white;margin-left: 3%;width: 80%" id="frmDetalhe" rendered="#{itemBeanController.tela == 1}" >
-            <h:panelGrid columns="2">
-
-                <h:panelGrid style="margin-left: 10px" columns="1">
-                    <h:panelGrid columns="1">
-                        <h:outputText value="Nome" />
-                        
-
-                        <p:inputText  size="30" requiredMessage="Nome obrigatório" value="#{itemBeanController.itemBean.nome}" />
-                    
-
-                    </h:panelGrid>
-                    <h:panelGrid>
-                        <h:outputText value="Composição" />
-                        <p:inputTextarea maxlength="199" cols="50" rows="10" value="#{itemBeanController.itemBean.composicao}" />
-                    </h:panelGrid>
-
-                    <h:panelGrid columns="1">
-                        <h:outputText value="Tipo de pratos já cadastrados" />
-
-                        <p:selectOneMenu value="#{itemBeanController.itemBean.tipo}" >
-                            <f:selectItem itemValue="#{null}" itemLabel="Nenhum" />
-                            <f:selectItems var="itemTp" value="#{itemBeanController.tiposDePrato}" itemLabel="#{itemTp.tipo}" itemValue="#{itemTp.tipo}" />
-
-                        </p:selectOneMenu> 
-
-                    </h:panelGrid>
-                    <h:outputText value="Nome" />
-                    <p:inputText  value="#{itemBeanController.itemBean.preço}" >
-                        <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
-                    </p:inputText>
-
-                    <h:panelGrid columns="2" >
-                        <p:commandButton    class="btn btn-success navbar-btn"   action="#{itemBeanController.salvar()}" value="Salvar" ajax="false"  />
-                        <p:commandButton    class="btn btn-danger navbar-btn"   action="#{itemBeanController.deletar()}" value="Deletar" ajax="false"  />
-                        <p:commandButton    class="btn btn-default navbar-btn"   actionListener="#{itemBeanController.mudarTela(0)}" ajax="false" value="Voltar"   />
-                    </h:panelGrid>
-                </h:panelGrid>
-
-            </h:panelGrid>
-            <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
-        </h:form>
-
-
-    </body>
+    </h:body>
 
 </html>
