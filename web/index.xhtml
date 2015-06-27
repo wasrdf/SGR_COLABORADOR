@@ -38,9 +38,9 @@
                             <div class="col-sm-7">
                                 <h3>Administração</h3>
                                 <p>Sistema de gerenciamento de Restaurante</p>
-                                
+
                                 <h:form>
-                                    
+
                                     <!-- @ Inputs -->
                                     <div class="form-group">
                                         <div class="input-group">
@@ -60,18 +60,20 @@
                                     <div class="btn-group" role="group" aria-label="...">
                                         <h:commandButton class="btn btn-default" value="Entrar" actionListener="#{funcionarioController.logar}"/>                                        
                                     </div>
-                                    
+
                                 </h:form>                                
-                               
+
                                 <!-- # Mensagens de Erro -->
                                 <h:messages styleClass="alert alert-warning"/> 
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>      
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Página de boas-vindas do Primefaces" />
     </h:body>
 </html>
 

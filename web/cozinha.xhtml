@@ -21,6 +21,7 @@
     </h:head>
 
     <body>
+        <ui:include src="topo.xhtml" />
         <h:form id="frmPrincipal">                
             <div class="vertical-center">
                 <div class="container" style="width:95%;max-height: 95%;height: 95%;margin-top:5px;">
@@ -62,7 +63,7 @@
 
                                     </p:column>
 
-
+ 
 
                                     <p:column headerText="Definir" style="text-align: center;font-size:22px;">
                                         <p:commandButton class="btn btn-info btn-xs" style="margin-left:5px;" update="movimento" value="Em Praparo" actionListener="#{funcionarioController.emPraparo(movimento)}" />

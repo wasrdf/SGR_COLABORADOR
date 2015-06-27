@@ -1,3 +1,4 @@
+
 package sgr.controller;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import sgr.bean.MovimentoBean;
 import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.dao.ContaItemDAO;
+import sgr.dao.SessionBeanDAO;
 import sgr.service.ClientService;
 import sgr.service.ContaItemBean;
 import sgr.service.FuncionarioService;
@@ -89,11 +91,18 @@ public class FuncionarioController {
     //aqui o caixa ou o gerente altera o status do item de Cancelamento para CANCELADO
     public void cancelarItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
+        SessionBeanDAO sessionBeanDAO = new SessionBeanDAO();
+        SessionBeanService sessionBeanService = new SessionBeanService();
+        sessionBean = sessionBeanService.carregarTotal(pMovimentoBean.getClienteCodigo());
+        //sessionBean.setTotal(sessionBean.getTotal() - pMovimentoBean.getPreco());
+        sessionBean.setTotal(sessionBean.getTotal() - (pMovimentoBean.getPreco()*pMovimentoBean.getQuantidade()));
+        sessionBeanDAO.atualizarTotalConta(sessionBean);
+        System.out.println("Valor da conta vinda do carregarTotal:" + sessionBean.getTotal());
+        System.out.println("Valor do item selecionado:" + pMovimentoBean.getPreco());
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("CANCELADO");
         contaItemDAO.alterarItemStatus(contaItemBean);
         listarItensCancelamento();
-    
         
     }
 
