@@ -1,15 +1,18 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+    SGR ALPHA
+    File: CAIXA.XHTML 
+    Developers: Kevin Raian, Washington Reis
+    IDINALOG REBORN © 2015
+-->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-
-      xmlns:p="http://primefaces.org/ui"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <!--Washington-->
+
     <h:head>
-        <title> Sistema de Gestão Restaurante</title>
+        <title>SGR | Caixa</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <!-- Carrega Bootstrap e CSS Extra -->
@@ -20,95 +23,133 @@
         <script src="js/jquery-2.1.3.js"></script>
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
-
     </h:head>
-    <body>
-        <ui:include src="topo.xhtml" />
-        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
-            <div  style="margin-left: 10px;margin-top: 5%" >
 
-                <p:commandButton    class="btn btn-default navbar-btn"   action="#{funcionarioController.navegarPara('/manterCliente.jsf')}" value="Efetuar Recebimento"  />
-                <p:commandButton ajax="false"    class="btn btn-default navbar-btn"   action="#{funcionarioController.mudarTela(1)}" value="Gerar Relatório de Vendas"  />
-               
-                <p:commandButton    class="btn btn-danger navbar-btn"   action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Conta"  />
+    <h:body style="padding-top: 70px;">
+        <!-- Inclui HEADER -->
+        <ui:include src="masterheader.xhtml" />
 
+        <!-- Corpo Principal -->
+        <div class="container">
+            <div class="row clearfix">
+                
+                <!-- Painel Esquerdo -->
+                <div class="col-md-6 column">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5><i class="fa fa-reorder sgr-panel-icon" style="font-size:14px;"/> Funções</h5>
+                        </div>
+                        <div class="panel-body">
+                            
+                            <!-- Botões de Função -->
+                            <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
+                                <p:commandButton ajax="false" class="btn btn-default btn-xs" action="#{funcionarioController.mudarTela(1)}" value="Gerar Relatório de Vendas"  />
+                                <p:commandButton class="btn btn-danger btn-xs" action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Contas"  />
+                            </h:form>
+                            
+                            <!-- Painel de Relatório -->
+                            <h:form style="margin-top: 5%" rendered="#{funcionarioController.tela == 1}">
+                                
+                                <!-- Botão Voltar -->
+                                <div style="margin-top:-30px;">
+                                    <p:commandButton ajax="false" class="btn btn-default btn-xs" action="#{funcionarioController.mudarTela(0)}" value="Voltar" />
+                                </div>
+                                <p:separator/>
+                                <div class="row">
+                                    
+                                    <!-- Funções de Relatório -->
+                                    <div class="col-lg-3">
+                                        <p>                                            
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"/></span>
+                                                <p:inputMask class="form-control" mask="99/99/9999" style="width:auto;height:32px;" value="#{funcionarioController.dataFiltro}">
+                                                </p:inputMask>
+                                                <span class="input-group-btn">
+                                                    <p:commandButton class="btn btn-default btn-xs" update="relatorio" value="Gerar Relatório por Data" actionListener="#{funcionarioController.gerarRelatorios()}"/>
+                                                </span>
+                                            </div>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Relatório -->
+                                <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
+                                    <div class="table-responsive">
+                                        <p:dataTable  tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhuma informação encontrada" var="relatorio" id="relatorio" value="#{funcionarioController.relatorios}" >
+                                            <p:column headerText="Cliente" >
+                                                <h:outputText value="#{relatorio.clienteNome}" />
+                                            </p:column>
+                                            <p:column headerText="Qnt." >
+                                                <h:outputText value="#{relatorio.quantidade}" />
+                                            </p:column>
+                                            <p:column headerText="Preço" >
+                                                <h:outputText value="#{relatorio.preco}" >
+                                                      <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Data" >
+                                                <h:outputText value="#{relatorio.data}" />
+                                            </p:column>                
+                                        </p:dataTable>    
+                                    </div>
+                                </div>
+                            </h:form>  
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Painel Direito -->
+                <div class="col-md-6 column">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5><i class="fa fa-exclamation-triangle sgr-panel-icon" style="font-size:14px;"/> Solicitações</h5>
+                        </div>
+                        <div class="panel-body">
+                            
+                            <!-- Tabela de Solicitações -->
+                            <h:form>
+                                <p:poll interval="15" listener="#{funcionarioController.listarItensCancelamento()}" update="item" />
+                                <div  class="row clearfix" style="max-height:300px;overflow-y: scroll;">
+                                    <div class="table-responsive">
+                                        <p:dataTable emptyMessage="Nenhuma solicitação encontrada" tableStyleClass="table table-striped sgr_p"  var="item" value="#{funcionarioController.listaItensCancelados}" id="item">
+                                            <p:column headerText="Mesa" style="text-align: center;">                                        
+                                                <h:outputText class="sgr_price" value="#{item.mesaNumero}"/>
+                                            </p:column>
+                                            <p:column headerText="Cliente" style="text-align: left;">                                        
+                                                <h:outputText value="#{item.clienteNome}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Item" style="text-align: center;">                                        
+                                                 <h:outputText  value="#{item.item}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Preço" style="text-align: center;">                                        
+                                                <h:outputText  value="#{item.preco}"/>
+                                            </p:column>
+                                            
+                                                   <p:column headerText="Quantidade" style="text-align: center;">                                        
+                                                       <h:outputText  value="#{item.quantidade}"/>
+                                            </p:column>
+                                     
+                                            
+                                            
+                                            <p:column headerText="Status" style="text-align: center;">                                        
+                                                <h:outputText class="label label-warning sgr_d" value="#{item.itemStatus}"/>
+                                            </p:column>
+                                            
+                                           
+                                            
+                                            <p:column>
+                                                <p:commandButton ajax="false" class="btn btn-danger btn-xs" update="item" value="Cancelar Pedido" actionListener="#{funcionarioController.cancelarItem(item)}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>       
             </div>
-                <p:poll interval="30" listener="#{funcionarioController.listarItensCancelamento()}" update="item" />
-                <h:dataTable  rendered="#{funcionarioController.listaItensCancelados.size() > 0}" border="1"  style="background-color: white;width: 100%;height: 80px;text-align: center" var="item" value="#{funcionarioController.listaItensCancelados}" id="item">
-
-            <h:column  >
-                <f:facet  name="header">
-                    <h:outputText style="margin-right: 200px" value="Mesa"/>
-                </f:facet>
-                <h:outputText  value="#{item.mesaNumero}"/>
-            </h:column>
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText style="margin-right: 220px;"  value="Cliente"/>
-                </f:facet>
-                <h:outputText  value="#{item.clienteNome}"/>
-            </h:column>
-
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText style="margin-right: 50px"  value="Solicitação de cancelamento"/>
-                </f:facet>
-                <h:outputText  style="color: red;font-weight: bold" value="#{item.itemStatus}"/>
-            </h:column>
-
-            <h:column >
-                <p:commandButton ajax="false" class="btn-default navbar-default" update="item" value="Cancelar Item" actionListener="#{funcionarioController.cancelarItem(item)}" />
-            </h:column>
-
-
-        </h:dataTable>
-    </h:form>
-        
-        <h:form style="margin-top: 5%" rendered="#{funcionarioController.tela == 1}">
-          
-            <p:commandButton ajax="false"    class="btn btn-default navbar-btn"   action="#{funcionarioController.mudarTela(0)}" value="Voltar"  />
-            <h:panelGrid columns="1" style="background-color: white;width: 100%">
-               
-                <h:panelGrid columns="2">
-                    <h:outputText value="Gerar relatório por data" />
-                    <p:inputMask mask="99/99/9999" style="margin-left: 10px"  value="#{funcionarioController.dataFiltro}" >
-                        
-                    </p:inputMask>
-                    <p:commandButton update="relatorio" value="Gerar Relatório" actionListener="#{funcionarioController.gerarRelatorios()}" />
-                </h:panelGrid>
-                
-                
-                <p:dataTable emptyMessage="Nenhuma informação encontrada" var="relatorio" id="relatorio" style="width: 100%" value="#{funcionarioController.relatorios}" >
-                    <p:column headerText="Cliente" >
-                        <h:outputText value="#{relatorio.clienteNome}" />
-                    </p:column>
-                
-                     <p:column headerText="Quantidade" >
-                         <h:outputText value="#{relatorio.quantidade}" />
-                    </p:column>
-                    
-                     <p:column headerText="Preço" >
-                         <h:outputText value="#{relatorio.preco}" />
-                    </p:column>
-                
-                        
-                    <p:column headerText="Data" >
-                        <h:outputText value="#{relatorio.data}" />
-                    </p:column>
-                
-                </p:dataTable>
-                
-                
-            </h:panelGrid>
-            
-        
-        
-        
-        </h:form>  
-        
-    </body>
-
+        </div>
+    </h:body>
 </html>

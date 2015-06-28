@@ -96,6 +96,8 @@ public class FuncionarioController {
         sessionBean = sessionBeanService.carregarTotal(pMovimentoBean.getClienteCodigo());
         //sessionBean.setTotal(sessionBean.getTotal() - pMovimentoBean.getPreco());
         sessionBean.setTotal(sessionBean.getTotal() - (pMovimentoBean.getPreco()*pMovimentoBean.getQuantidade()));
+        sessionBean.setCodigo(pMovimentoBean.getContaCodigo());
+        System.out.println("CONTA CODIGO:" + sessionBean.getCodigo());
         sessionBeanDAO.atualizarTotalConta(sessionBean);
         System.out.println("Valor da conta vinda do carregarTotal:" + sessionBean.getTotal());
         System.out.println("Valor do item selecionado:" + pMovimentoBean.getPreco());

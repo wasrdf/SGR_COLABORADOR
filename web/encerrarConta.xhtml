@@ -1,23 +1,20 @@
 <!--
-    SGR BETA
-    File: MAINCLIENT.XHTML | Last Major Update: 13.05.2015
-    Developer: Kevin Raian
+    SGR ALPHA
+    File: ENCERRARCONTA.XHTML 
+    Developers: Kevin Raian, Washington Reis
     IDINALOG REBORN © 2015
 -->
- 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui" lang="pt_br"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
- 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-
-        <title>SGR | Principal</title>
-
+        <title>SGR | Caixa</title>
         <!-- Carrega Bootstrap e CSS Extra -->
         <link href="css/bootstrap.css" rel="stylesheet"></link>
         <link href="css/sgr.css" rel="stylesheet"></link>
@@ -27,148 +24,128 @@
         <script src="js/jquery-2.1.3.js"></script>
         <!-- Carrega Plugins Avulsos -->		
         <script src="js/bootstrap.js"></script>
-
     </h:head>
 
-    <h:body>
+    <h:body style="padding-top: 70px;">
+        <!-- Inclui HEADER -->
+        <ui:include src="masterheader.xhtml" />
 
-        <ui:include src="topo.xhtml" />
-        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
-            <h:panelGrid width="100%" >
+        <!-- Corpo Principal -->
+        <div class="container">
+            <div class="row clearfix">
 
+                <!-- Painel Principal -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5><i class="fa fa-close sgr-panel-icon" /> Encerrar Contas</h5>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Solicitações de Encerramento -->                        
+                        <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
+                            <div style="padding-bottom:15px;">
+                                <p:commandButton class="btn btn-default btn-xs" ajax="false" value="Voltar" actionListener="#{funcionarioController.navegarPara('/caixa.jsf')}" />
+                            </div>
+                            <p:poll interval="15" listener="#{funcionarioController.recarregarMesas()}" update="mesas" />
+                            <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
+                                <div class="table-responsive">
+                                    <p:dataTable style="text-align: center" id="mesas" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhuma mesa aberta." var="mesas" value="#{funcionarioController.listaMesasAberto}">
+                                        <p:column headerText="Mesa">
+                                            <h:outputText class="sgr_price" value="#{mesas.numero}" />
+                                        </p:column>
+                                        <p:column headerText="Status">
+                                            <h:outputText  class="label label-danger sgr_d" value="#{mesas.frag}" />
+                                        </p:column>
+                                        <p:column headerText="Função">
+                                            <p:commandButton ajax="false" class="btn btn-danger btn-xs" update="mesas" value="Visualizar Conta" actionListener="#{funcionarioController.visualizarPedidos(mesas)}" />
+                                        </p:column>
+                                    </p:dataTable>         
+                                </div>
+                            </div>
+                        </h:form>
 
-                <h:panelGrid  columns="1" width="100%" style="margin-left: 10px;margin-top: 5%;background-color: #F8F8F8;" >
+                        <!-- Relatório da Conta -->
+                        <h:form id="frmDetalhe" rendered="#{funcionarioController.tela == 1}">
+                            <div>
+                                <p:commandButton class="btn btn-default btn-xs" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
+                            </div>
+                            <p:separator/>
+                            <h:messages class="alert alert-warning" showDetail="true" layout="table" style="width:100%;padding-bottom:15px;"/>
+                            <h2 style="margin-left:15px;"><i class="fa fa-calculator" style="color:black;margin-right:10px;"/>Resumo da Conta</h2>
 
-                    <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="mesas" />
-                    <p:dataTable style="text-align: center" id="mesas" tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
-
-
-                        <p:column headerText="Mesa">
-                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.numero}" />
-                        </p:column>
-
-                        <p:column headerText="Solicitação de Encerramento">
-                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{mesas.frag}" />
-                        </p:column>
-
-
-                        <p:column headerText="Visualizar Itens">
-                            <p:commandButton ajax="false" class="btn btn-default navbar-default" update="mesas" value="Visualizar" actionListener="#{funcionarioController.visualizarPedidos(mesas)}" />
-                        </p:column>
-
-
-                    </p:dataTable>
-
-
-                </h:panelGrid>
-
-            </h:panelGrid>
-
-        </h:form>
-
-
-        <h:form style="margin-top: 5%;margin-left: 3%" id="frmDetalhe" rendered="#{funcionarioController.tela == 1}">
-
-            <h:panelGrid border="0" columns="1" width="300px" style="text-align: left"   >
-
-                <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Voltar" actionListener="#{funcionarioController.mudarTela(0)}" />
-            </h:panelGrid>
-            <h:panelGrid  id="cupom" style="background-color: #F8F8F8" >
-
-                <h:panelGrid>
-                    <h:outputText value="Restaurante GATOS 289 - Av, Moura de Sá - Nova Iguaçu" />
-                    <h:outputText value="Telefone: 2334-8877" />
-                    <p:separator/>
-                    <h:outputText value="COMPROVANTE - Sem valor fiscal" />
-                    <h:outputText value="Número: #{movimento.clienteCodigo}" />
-                    ------------------------------------------------------------
-                </h:panelGrid>
-
-                <h:dataTable  style="background-color: white;width: 40%" var="movimento" value="#{funcionarioController.listaMovimento}" id="movimento">
-
-                    <h:column  >
-                        <f:facet  name="header">
-                            <h:outputText style="margin-right: 200px" value="Produto"/>
-                        </f:facet>
-                        <h:outputText  value="#{movimento.item}"/>
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText style="margin-right: 220px;"  value="Quantidade"/>
-                        </f:facet>
-                        <h:outputText  value="#{movimento.quantidade}"/>
-                    </h:column>
+                            <h:panelGrid width="100%" id="cupom" style="background-color: #F8F8F8" >
 
 
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText style="margin-right: 50px"  value="Status"/>
-                        </f:facet>
+                                <h:panelGrid>
+                                    <h:outputText value="Restaurante GATOS 289 - Av, Moura de Sá - Nova Iguaçu" />
+                                    <h:outputText value="Telefone: 2334-8877" />
+                                    <p:separator/>
+                                    <h:outputText value="COMPROVANTE - Sem valor fiscal" />
+                                    <h:outputText value="Número: #{funcionarioController.movimentoBean.clienteCodigo}" />
 
-                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
-                            <h:outputText style="color: red;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />
-                        </p:outputPanel>
+                                </h:panelGrid>
 
-                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
-                            <h:outputText style="color: blue;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                        </p:outputPanel>
+                                was
 
-                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
-                            <h:outputText style="color: green;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                        </p:outputPanel>
-
-                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
-                            <h:outputText style="color: #28a4c9;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                        </p:outputPanel>
-
-                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
-                            <h:outputText style="color: blue;background-color: #888;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                        </p:outputPanel>
-
-                      <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
-                            <h:outputText style="color: violet;font-weight: bold;font-size: 17px" value="#{movimento.itemStatus}" />  
-                        </p:outputPanel>
-                
-
-
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText  value="Preço"/>
-                        </f:facet>
-                        <h:outputText style="text-align: right;margin-right: 20px"  value="#{movimento.preco}">
-                            <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
-                        </h:outputText>
-                    </h:column>
-
-
-                </h:dataTable>
-
-
-                <h:panelGrid border="1" width="100%" style="text-align: right;font-size: 18px" >
-
-                    <h:outputText  value=" TOTAL: R$ #{funcionarioController.valorTotal} " >
-                        <f:convertNumber locale="pt_BR" pattern="#,##0.00" maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14"  />
-                    </h:outputText>    
-                </h:panelGrid>
-                <ui:insert name="cupom" />  
-            </h:panelGrid>
+                                <p:dataTable tableStyleClass="table table-striped sgr_p" var="movimento" value="#{funcionarioController.listaMovimento}" id="movimento">
+                                    <p:column headerText="Item" style="text-align:left;">                                    
+                                        <h:outputText  value="#{movimento.item}"/>
+                                    </p:column>
+                                    <p:column headerText="Qnt." style="text-align:center;">                                    
+                                        <h:outputText  value="#{movimento.quantidade}"/>
+                                    </p:column>
+                                    <p:column headerText="Status" style="text-align:center;">                                
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Solicitado')}"  >
+                                            <h:outputText class="label label-default sgr_d" value="#{movimento.itemStatus}" />
+                                        </p:outputPanel>
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Pronto')}" >
+                                            <h:outputText class="label label-primary sgr_d" value="#{movimento.itemStatus}" />  
+                                        </p:outputPanel>
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Entregue')}" >
+                                            <h:outputText class="label label-success sgr_d" value="#{movimento.itemStatus}" />  
+                                        </p:outputPanel>
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelamento')}" >
+                                            <h:outputText class="label label-warning sgr_d" value="#{movimento.itemStatus}" />  
+                                        </p:outputPanel>
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Cancelado')}" >
+                                            <h:outputText class="label label-danger sgr_d" value="#{movimento.itemStatus}" />  
+                                        </p:outputPanel>
+                                        <p:outputPanel rendered="#{movimento.itemStatus.equals('Em Preparo')}" >
+                                            <h:outputText class="label label-info sgr_d" value="#{movimento.itemStatus}" />  
+                                        </p:outputPanel>
+                                    </p:column>
+                                    <p:column headerText="Preço" style="text-align:center;;">
+                                        R$ <b>
+                                            <h:outputText value="#{movimento.preco}">
+                                                <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
+                                            </h:outputText> </b>
+                                    </p:column>
+                                </p:dataTable>
 
 
-            <h:panelGrid columns="2" >
-                <p:commandButton class="btn btn-danger navbar-btn" style="margin-left: 5px;width: 150px" update=":frmPrincipal :frmDetalhe" ajax="false" value="Encerrar Conta" actionListener="#{funcionarioController.encerrarConta()}" />
+                                <p>                         <h:panelGrid columns="2">
+                                        <i class="fa fa-check-circle" style="margin-right:10px;"/>Total da Conta:<span class="sgr_price" style="margin-left:5px;">R$
+                                            <h:outputText  style="margin-left: 10px;font-size: 20px" value="#{funcionarioController.valorTotal} " >
+                                                <f:convertNumber locale="pt_BR" pattern="#,##0.00" maxFractionDigits="2" groupingUsed="true" maxIntegerDigits="14"  />
+                                            </h:outputText></span>
+                                    </h:panelGrid>
+                                </p>
 
-                <p:commandButton class="btn btn-success navbar-btn" ajax="false" value="Imprimir" >
-                    <p:printer target="cupom" />
-                </p:commandButton>
+                                <ui:insert name="cupom" />  
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" >
+                                <p:commandButton class="btn btn-danger btn-xs" update=":frmPrincipal :frmDetalhe" ajax="false" value="Encerrar Conta" actionListener="#{funcionarioController.encerrarConta()}" />
+                                <p:commandButton class="btn btn-success btn-xs" ajax="false" value="Imprimir" >
+                                    <p:printer target="cupom" />
+                                </p:commandButton>
+                            </h:panelGrid>
 
-            </h:panelGrid>
-            <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                        </h:form>
+                    </div>
+                </div>
 
+            </div>
+        </div>
 
-        </h:form>
 
     </h:body>
 

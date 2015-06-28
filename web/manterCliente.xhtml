@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-  
+
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
@@ -27,7 +27,7 @@
     </h:head>
 
     <h:body >
-        <ui:include src="topo.xhtml" />
+
         <div class="container vertical-center">
             <div class="row">    
                 <div class="panel panel-default">    
@@ -41,7 +41,7 @@
                                 <div class="col-md-10">
                                     <h3>Cadastro</h3>
                                     <p>Por favor, preencha corretamente os dados do cliente a ser cadastrado no sistema.</p>
-                                  
+
                                 </div>
                             </div>
                             <!-- / Header -->
@@ -49,7 +49,7 @@
                             <!-- Form -->
                             <div class="row" >                                
                                 <div class="col-md-6">
-                                    
+
                                     <div class="form-group col-xs-8">
                                         <label for="name">Nome Completo</label>
                                         <p:inputText style="text-transform: uppercase" id="clientName" type="text" class="form-control" value="#{funcionarioController.clienteBean.nome}"/>
@@ -74,7 +74,7 @@
                                         <p:inputMask mask="99.999.999-9" id="clientRG"  class="form-control" value="#{funcionarioController.clienteBean.rg}"/>
                                         <span id="helpBlock" class="help-block">Apenas números</span>
                                     </div>
-                                   
+
                                     <div class="form-group col-xs-6">
                                         <label for="homenumber">Telefone Residêncial</label>
                                         <div class="input-group">
@@ -102,7 +102,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                   
+
                                     <div class="form-group col-xs-9">
                                         <label for="address">Endereço</label>
                                         <p:inputText id="clientAddress" type="text" class="form-control" value="#{funcionarioController.clienteBean.endereco}"/>
@@ -127,7 +127,7 @@
                                         <label for="neighborhood">Bairro</label>
                                         <p:inputText id="clientNeighborhood" type="text" class="form-control" value="#{funcionarioController.clienteBean.bairro}"/>
                                     </div>
-                                
+
                                     <div class="form-group col-xs-6">
                                         <label for="username">Nome de Usuário</label>
                                         <div class="input-group">
@@ -142,12 +142,20 @@
                                             <p:inputText id="clientPassword" type="password" class="form-control" value="#{funcionarioController.clienteBean.senha}"/>
                                         </div>
                                     </div>
-                                    
-                                      <div class="form-group col-xs-6">
+
+                                    <div class="form-group col-xs-8">
                                         <label for="password">Repetir Senha</label>
                                         <div class="input-group">
                                             <span class="input-group-addon" ><i class="fa fa-unlock-alt"></i></span>
                                             <p:password   class="form-control" value="#{funcionarioController.senha}"/>
+                                        </div>
+                                        <br/>
+                                        <div class="input-group">
+                                            <h:selectOneMenu     value="#{funcionarioController.clienteBean.situacao}"  class="form-control" style="padding:3px;width:140px;height:35px;">
+                                                <f:selectItem   itemLabel="Ativo" itemValue="Ativo"   />
+                                                <f:selectItem   itemLabel="Inativo"  itemValue="Inativo"  />
+
+                                            </h:selectOneMenu>
                                         </div>
                                     </div>
                                 </div>
@@ -160,7 +168,7 @@
                             <p:commandButton ajax="false" value="Finalizar Cadastro" actionListener="#{funcionarioController.salvarClient()}"  class="btn btn-success btn-xs" style="float:right;" />
                         </div>
 
-                     <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                        <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
                     </h:form>
 
                 </div>
