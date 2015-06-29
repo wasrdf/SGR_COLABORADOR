@@ -30,6 +30,7 @@ import sgr.service.MovimentoService;
 
 import sgr.service.SessionBeanService;
 import sgr.service.TableBeanService;
+import sgr.util.Validacoes;
 
 @SessionScoped
 @ManagedBean(name = "funcionarioController")
@@ -156,12 +157,19 @@ public class FuncionarioController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "As senhas devem ser iguais.", ""));
             return;
         } else {
+            if (Validacoes.isCPF(funcionarioNovo.getCpf().replace(".", "").replace("-", "")) == false) {
+                System.out.println("cpf digitado" + funcionarioNovo.getCpf());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
+                return;
 
-            if (clientService.inserirCliente(clienteBean) != null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente cadastrado com sucesso.", ""));
-                clienteBean = new ClientBean();
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nome de usuário invalido.", ""));
+
+                if (clientService.inserirCliente(clienteBean) != null) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente cadastrado com sucesso.", ""));
+                    clienteBean = new ClientBean();
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nome de usuário invalido.", ""));
+                }
             }
         }
 
@@ -335,10 +343,10 @@ public class FuncionarioController {
         funcionarioNovo = pFuncionario;
         tela = 1;
     }
-    
-     public void clienteSelecionado(ClientBean pCliente) {
 
-       clienteBean = pCliente;
+    public void clienteSelecionado(ClientBean pCliente) {
+
+        clienteBean = pCliente;
         tela = 1;
     }
 
@@ -364,11 +372,18 @@ public class FuncionarioController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção!", "As senhas devem ser iguais!"));
             return;
         } else {
+            if (Validacoes.isCPF(funcionarioNovo.getCpf().replace(".", "").replace("-", "")) == false) {
+            System.out.println("cpf digitado" + funcionarioNovo.getCpf());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
+            return;
 
+        } else {
             funcionarioService.salvar(funcionarioNovo);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Funcionario salvo."));
             funcionarioNovo = new FuncionarioBean();
-
+            
+            }
+            
         }
     }
 
@@ -653,6 +668,5 @@ public class FuncionarioController {
     public void setListaCliente(List<ClientBean> listaCliente) {
         this.listaCliente = listaCliente;
     }
-    
 
 }
