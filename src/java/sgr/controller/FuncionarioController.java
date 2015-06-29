@@ -1,4 +1,3 @@
-
 package sgr.controller;
 
 import java.io.IOException;
@@ -35,8 +34,7 @@ import sgr.service.TableBeanService;
 @SessionScoped
 @ManagedBean(name = "funcionarioController")
 public class FuncionarioController {
-        
-    
+
     FuncionarioService funcionarioService = new FuncionarioService();
     List<FuncionarioBean> listFuncionario;
     FuncionarioBean funcionario;
@@ -59,6 +57,7 @@ public class FuncionarioController {
     List<MovimentoBean> listaPedidosCozinha = new ArrayList<MovimentoBean>();
     List<MovimentoBean> listaPedidosFechados = new ArrayList<MovimentoBean>();
     List<MovimentoBean> listaItensCancelados = new ArrayList<MovimentoBean>();
+    List<MovimentoBean> listaItensProntos = new ArrayList<MovimentoBean>();
     List<MovimentoBean> relatorios = new ArrayList<MovimentoBean>();
     List<TableBean> listaMesasAberto = new ArrayList<TableBean>();
     TableBean tableBean = new TableBean();
@@ -68,8 +67,8 @@ public class FuncionarioController {
     String statusSelecionado = "";
     Date dataFiltro;
     String dataStringFiltro = "";
-    
-    
+    List<ClientBean> listaCliente = new ArrayList<ClientBean>();
+
     public FuncionarioController() {
         Date dataAtual = Calendar.getInstance().getTime();
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -78,16 +77,19 @@ public class FuncionarioController {
         CurrentHour = dfHour.format(dataAtual);
         listarItensCancelamento();
         listarItensProntosESolicitados();
-        
+
     }
-    
-    
-    
+
+    public void listarItensProntos() {
+        MovimentoService movimentoService = new MovimentoService();
+        listaItensProntos = movimentoService.listarItensProntos("");
+    }
+
     public void listarItensCancelamento() {
-      MovimentoService movimentoService = new MovimentoService();
-      listaItensCancelados = movimentoService.listarItensCancelados("");
+        MovimentoService movimentoService = new MovimentoService();
+        listaItensCancelados = movimentoService.listarItensCancelados("");
     }
-    
+
     //aqui o caixa ou o gerente altera o status do item de Cancelamento para CANCELADO
     public void cancelarItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
@@ -95,7 +97,7 @@ public class FuncionarioController {
         SessionBeanService sessionBeanService = new SessionBeanService();
         sessionBean = sessionBeanService.carregarTotal(pMovimentoBean.getClienteCodigo());
         //sessionBean.setTotal(sessionBean.getTotal() - pMovimentoBean.getPreco());
-        sessionBean.setTotal(sessionBean.getTotal() - (pMovimentoBean.getPreco()*pMovimentoBean.getQuantidade()));
+        sessionBean.setTotal(sessionBean.getTotal() - (pMovimentoBean.getPreco() * pMovimentoBean.getQuantidade()));
         sessionBean.setCodigo(pMovimentoBean.getContaCodigo());
         System.out.println("CONTA CODIGO:" + sessionBean.getCodigo());
         sessionBeanDAO.atualizarTotalConta(sessionBean);
@@ -105,18 +107,17 @@ public class FuncionarioController {
         contaItemBean.setStatus("CANCELADO");
         contaItemDAO.alterarItemStatus(contaItemBean);
         listarItensCancelamento();
-        
+
     }
 
-     public void emPraparo(MovimentoBean pMovimentoBean) {
+    public void emPraparo(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("Em Preparo");
         contaItemDAO.alterarItemStatus(contaItemBean);
         listarItensProntosESolicitados();
     }
-    
-    
+
     public void alterarStatusItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
@@ -126,26 +127,25 @@ public class FuncionarioController {
         listarItensProntosESolicitados();
     }
 
-      public void desfazer(MovimentoBean pMovimentoBean) {
+    public void desfazer(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("Solicitado");
-        
+
         contaItemDAO.alterarItemStatus(contaItemBean);
         listarItensProntosESolicitados();
     }
 
-    
     public void alterarStatusItemEntregue(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
-        if ((pMovimentoBean.getItemStatus().equals("Solicitado")) ||(pMovimentoBean.getItemStatus().equals("Em Preparo")) ) {
+        if ((pMovimentoBean.getItemStatus().equals("Solicitado")) || (pMovimentoBean.getItemStatus().equals("Em Preparo"))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Você não pode entregar este item pois o mesmo ainda não está pronto.", ""));
         } else {
             contaItemBean.setStatus("Entregue");
             System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
             contaItemDAO.alterarItemStatus(contaItemBean);
-           listarItensProntosESolicitados();
+            listarItensProntosESolicitados();
         }
     }
 
@@ -165,6 +165,11 @@ public class FuncionarioController {
             }
         }
 
+    }
+
+    public void listarClientes() {
+        ClientService clientService = new ClientService();
+        listaCliente = clientService.listarClientes(filtroDeFuncionario);
     }
 
     //metodo cadastrar cliente() 
@@ -193,6 +198,7 @@ public class FuncionarioController {
 
         if (funcionario.getFuncao().equals("Gerente")) {
             System.out.println("Gerente logando");
+            listarClientes();
             FacesContext.getCurrentInstance().getExternalContext().
                     redirect(ctx.getExternalContext().getRequestContextPath() + "/admin.jsf");
             listFuncionario = funcionarioService.listarFuncionario(filtroDeFuncionario);
@@ -200,6 +206,7 @@ public class FuncionarioController {
 
             if (funcionario.getFuncao().equals("Garçom")) {
                 System.out.println("Garçom logando");
+                listarItensProntos();
                 FacesContext.getCurrentInstance().getExternalContext().
                         redirect(ctx.getExternalContext().getRequestContextPath() + "/waiter.jsf");
 
@@ -224,8 +231,6 @@ public class FuncionarioController {
 
     }
 
-    
-    
     public void recarregarMesas() {
         TableBeanService tableBeanService = new TableBeanService();
         listaMesasAberto = tableBeanService.listarMesasAbertas();
@@ -258,7 +263,7 @@ public class FuncionarioController {
     }
 
     public void listarItensProntosESolicitados() {
-        
+
         MovimentoService movimentoService = new MovimentoService();
         listaMovimento = movimentoService.listarItensSolicitados(filtroPedido);
     }
@@ -280,16 +285,16 @@ public class FuncionarioController {
 
         }
         if (status == true) {
-            
+
             sessionBean.setCodigo(listaMovimento.get(0).getContaCodigo());
             sessionBean.setStatus(false);
-            
+
             tableBean.setNumero(listaMovimento.get(0).getMesaNumero());
             tableBean.setStatus(false);
-            tableBeanService.fecharMesa(tableBean);          
+            tableBeanService.fecharMesa(tableBean);
             System.out.println("Numero da conta:" + listaMovimento.get(0).getContaCodigo());
             System.out.println("Numero Mesa:" + listaMovimento.get(0).getMesaNumero());
-         
+
             sessionBeanService.encerrarConta(sessionBean);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "A conta foi encerrada com sucesso.", ""));
 
@@ -317,7 +322,7 @@ public class FuncionarioController {
     public void setListaItensCancelados(List<MovimentoBean> listaItensCancelados) {
         this.listaItensCancelados = listaItensCancelados;
     }
-    
+
     public void listarFuncionario() {
 
         FuncionarioService funcionarioService = new FuncionarioService();
@@ -328,6 +333,12 @@ public class FuncionarioController {
     public void funcionarioSelecionado(FuncionarioBean pFuncionario) {
 
         funcionarioNovo = pFuncionario;
+        tela = 1;
+    }
+    
+     public void clienteSelecionado(ClientBean pCliente) {
+
+       clienteBean = pCliente;
         tela = 1;
     }
 
@@ -360,8 +371,7 @@ public class FuncionarioController {
 
         }
     }
-     
-    
+
     //metodo gerar relatorios de vendas por data
     public void gerarRelatorios() {
         MovimentoService movimentoService = new MovimentoService();
@@ -627,5 +637,22 @@ public class FuncionarioController {
     public void setDataStringFiltro(String dataStringFiltro) {
         this.dataStringFiltro = dataStringFiltro;
     }
-   
+
+    public List<MovimentoBean> getListaItensProntos() {
+        return listaItensProntos;
+    }
+
+    public void setListaItensProntos(List<MovimentoBean> listaItensProntos) {
+        this.listaItensProntos = listaItensProntos;
+    }
+
+    public List<ClientBean> getListaCliente() {
+        return listaCliente;
+    }
+
+    public void setListaCliente(List<ClientBean> listaCliente) {
+        this.listaCliente = listaCliente;
+    }
+    
+
 }

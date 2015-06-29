@@ -60,49 +60,6 @@
                                         <p:column headerText="Função" style="text-align:left" >                                            
                                             <h:outputText value="#{lista.funcao}"  />
                                         </p:column>
-                                        <p:column headerText="Situação" style="text-align:left" >                                            
-                                            <h:outputText value="#{lista.situacao}"  />
-        <ui:include src="topo.xhtml" />
-        <div class="container">
-            <div class="row clearfix">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5><i class="fa fa-user-secret sgr-panel-icon" style="font-size:14px;"></i> Funcionários</h5>
-                    </div>
-                    <div class="panel-body">
-
-                        <h:form   id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-search"/></span>
-                                        <p:inputText placeholder="Pesquisar por..." class="form-control" style="width:auto;height:32px;" value="#{funcionarioController.filtroDeFuncionario}" />                                   
-                                        <span class="input-group-btn">
-                                            <p:commandButton class="btn btn-default btn-xs" value="Buscar" actionListener="#{funcionarioController.listarFuncionario()}" update="lista" />
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-9">
-                                    <p:commandButton class="btn btn-default btn-xs" value="Cadastrar Funcionário" actionListener="#{funcionarioController.mudarTela(1)}" ajax="false" update=":frmPrincipal :frmDetalhe" />                    
-                                </div>
-                            </div>
-                            <div style="padding-bottom: 30px;">
-                            </div>
-                            <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
-                                <div class="table-responsive">
-                                    <p:dataTable style="text-align: center" id="lista" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum funcionário encontrado."
-                                                 var="lista" value="#{funcionarioController.listFuncionario}">
-                                        <p:column width="10%" headerText="Código">
-                                            <h:outputText value="#{lista.codigo}"   />                                    
-                                        </p:column>
-                                        <p:column headerText="Nome" style="text-align:left;">
-                                            <i class="fa fa-edit" style="margin-right:5px;"/>
-                                            <h:commandLink actionListener="#{funcionarioController.funcionarioSelecionado(lista)}"  class="highlight_h" style="font-size:16px;" value="#{lista.nome}"   />                                    
-                                        </p:column>
-                                        <p:column headerText="Função" style="text-align:left" >                                            
-                                            <h:outputText value="#{lista.funcao}"  />
-                                        </p:column>
 
                                     </p:dataTable>  
                                 </div>
@@ -116,7 +73,7 @@
                             <p:commandButton  ajax="false" class="btn btn-default btn-xs" style="" value="Voltar" 
                                               actionListener="#{funcionarioController.mudarTela(0)}" update=":frmDetalhe :frmPrincipal" /> 
                             <p:separator/>
-                            <h:messages class="alert alert-warning" showDetail="true" layout="table" style="width:100%"/>
+                            <p:messages  class="alert alert-warning" showDetail="true"  style="width:100%;color: red;font-weight: bold"/>
 
                             <div class="col-md-6 column">
                                 <h2 style="margin-left:15px;">Dados do Funcionário</h2>
@@ -184,14 +141,14 @@
                                     <label for="password">Senha</label>
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
-                                        <h:inputSecret class="form-control" value="#{funcionarioController.funcionarioNovo.senha}" />
+                                        <h:inputSecret class="form-control" value="#{funcionarioController.senha}" />
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="confirmpassword">Confirmação de Senha</label>
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
-                                        <h:inputSecret class="form-control" value="#{funcionarioController.senha}" />      
+                                        <h:inputSecret class="form-control" value="#{funcionarioController.funcionarioNovo.senha}" />      
                                     </div>
                                 </div>
                                 <br></br>
@@ -205,10 +162,7 @@
                             <p:commandButton ajax="false"  class="btn btn-success btn-xs" style="margin-left: 5px;float:right;" value="Salvar" 
                                              actionListener="#{funcionarioController.salvar()}" update=":frmDetalhe :frmPrincipal" />           
                            
-                            <p:commandButton ajax="false"  class="btn btn-success btn-xs" style="margin-left: 5px;float:right;" value="Criar Funcionário" 
-                                             actionListener="#{funcionarioController.salvar()}" update=":frmDetalhe :frmPrincipal" />           
-                            <p:commandButton class="btn btn-danger btn-xs"  value="Excluir" 
-                                             actionListener="#{funcionarioController.deletarFuncionario()}" update=":frmDetalhe :frmPrincipal" />    
+                           
                         </h:form>
 
                     </div>

@@ -77,4 +77,21 @@ public class ClientService {
             return null;
         }
     }
+    
+    public List<ClientBean> listarClientes(String pNome) {
+        List<ClientBean> listaCliente = new ArrayList<ClientBean>();
+        QueryBuilder query = new QueryBuilder();
+        ClientDAO clientDAO = new ClientDAO();
+
+        query.addQuery(QueryOperation.empty, "cliente.nome_usuario", QueryGender.has, pNome, QueryType.text);
+        try {
+             listaCliente = clientDAO.loadClient(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return listaCliente;
+    }
 }

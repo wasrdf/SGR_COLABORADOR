@@ -44,10 +44,10 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><h5><i class="fa fa-bar-chart sgr-panel-icon" style="font-size:14px;"></i> Resumo Geral</h5></div>
                         <div class="panel-body">
-                            <p><i class="fa fa-square sgr-panel-icon"/> Mesas Abertas: <span class="badge">07</span></p>
-                            <p><i class="fa fa-clock-o sgr-panel-icon"/> Pedidos Pendentes: <span class="badge">11</span></p>
-                            <p><i class="fa fa-check sgr-panel-icon"/> Pedidos a Entregar: <span class="badge">04</span></p>
-                            <p><i class="fa fa-times-circle sgr-panel-icon"/> Cancelamentos Solicitados: <span class="badge">01</span></p>
+                            <p><i class="fa fa-square sgr-panel-icon"/> Mesas Abertas: <span class="badge">#{funcionarioController.listaMesasAberto.size()}</span></p>
+                            <p><i class="fa fa-clock-o sgr-panel-icon"/> Pedidos Pendentes: <span class="badge">#{funcionarioController.listaMovimento.size()}</span></p>
+                            <p><i class="fa fa-check sgr-panel-icon"/> Pedidos a Entregar: <span class="badge">#{funcionarioController.listaItensProntos.size()}</span></p>
+                            <p><i class="fa fa-times-circle sgr-panel-icon"/> Cancelamentos Solicitados: <span class="badge">#{funcionarioController.listaItensCancelados.size()}</span></p>
                             <p><i class="fa fa-sign-out sgr-panel-icon"/> Contas à Encerrar: <span class="badge">01</span></p>
                         </div>
                     </div>
