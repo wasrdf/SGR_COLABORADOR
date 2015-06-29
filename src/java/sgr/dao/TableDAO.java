@@ -61,6 +61,8 @@ public class TableDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setBoolean(1, pTableBean.isStatus());
             ps.setInt(2, pTableBean.getNumero());
+            ps.execute();
+            ps.close();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(TableDAO.class.getName()).log(Level.SEVERE, null, ex);

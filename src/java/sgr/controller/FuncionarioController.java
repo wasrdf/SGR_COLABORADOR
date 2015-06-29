@@ -301,7 +301,7 @@ public class FuncionarioController {
             tableBean.setStatus(false);
             tableBeanService.fecharMesa(tableBean);
             System.out.println("Numero da conta:" + listaMovimento.get(0).getContaCodigo());
-            System.out.println("Numero Mesa:" + listaMovimento.get(0).getMesaNumero());
+            System.out.println("Numero Mesa@@@@@@@:" + listaMovimento.get(0).getMesaNumero());
 
             sessionBeanService.encerrarConta(sessionBean);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "A conta foi encerrada com sucesso.", ""));
