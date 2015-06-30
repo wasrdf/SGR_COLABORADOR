@@ -67,9 +67,9 @@
 
                                     <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}">
 
-                                        <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="movimento" />
+                                        <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="movimento2" />
 
-                                        <p:dataTable id="movimento" style="text-align: center;"  tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
+                                        <p:dataTable id="movimento2" style="text-align: center;"  tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
 
                                             <p:column headerText="Mesa" class="sgr_p">
                                                 <h:outputText class="sgr_price" value="#{mesas.numero}" />
@@ -104,7 +104,7 @@
 
                                 <br/>
 
-                                <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
+                                <p:poll interval="30" listener="#{funcionarioController.listarItensProntos()}" update="movimento" />
 
                                 <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
                                     <div class="table-responsive">

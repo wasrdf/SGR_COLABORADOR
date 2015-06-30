@@ -26,39 +26,32 @@
         <title>SGR | Cadastro</title>
     </h:head>
 
-    <h:body >
-
+    <h:body>
+      
         <div class="container vertical-center">
             <div class="row">    
                 <div class="panel panel-default">    
                     <h:form id="signup-form">
                         <div class="panel-body">
                             <!-- Header -->
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img alt="Brand" src="img/sgr_logo_sd.png" style="max-height: 150px;"></img>
-                                </div>
-                                <div class="col-md-10">
-                                    <h3>Cadastro</h3>
-                                    <p>Por favor, preencha corretamente os dados do cliente a ser cadastrado no sistema.</p>
-
-                                </div>
-                            </div>
+                          
                             <!-- / Header -->
 
                             <!-- Form -->
                             <div class="row" >                                
                                 <div class="col-md-6">
-
+                                    <h2 style="margin-left:15px;">Sobre Você</h2>
                                     <div class="form-group col-xs-8">
                                         <label for="name">Nome Completo</label>
-                                        <p:inputText style="text-transform: uppercase" id="clientName" type="text" class="form-control" value="#{funcionarioController.clienteBean.nome}"/>
+                                        <span style="color: red">* </span>
+                                        <p:inputText id="clientName" type="text" class="form-control" value="#{funcionarioController.clienteBean.nome}"/>
                                     </div>
                                     <div class="form-group col-xs-4">                                        
                                         <label for="birthdate">Data de Nascimento</label>
+                                        <span style="color: red">* </span>
                                         <div class="input-group">
                                             <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                            <p:inputMask mask="99/99/9999" id="clientBirthDate"  
+                                            <p:inputMask mask="99/99/9999" id="clientBirthDate"  required="true" requiredMessage="O campo 'Data de Nascimento' é obrigatório."
                                                          class="form-control" value="#{funcionarioController.clienteBean.data_nasc}" >
                                                 <f:convertDateTime locale="pt_BR" dateStyle="long" pattern="dd/MM/yyyy" />
                                             </p:inputMask>
@@ -66,15 +59,17 @@
                                     </div>
                                     <div class="form-group col-xs-6">
                                         <label for="cpf">CPF</label>
+                                        <span style="color: red">* </span>
                                         <p:inputMask mask="999.999.999-99" id="clientCPF"  class="form-control" value="#{funcionarioController.clienteBean.cpf}"/>
                                         <span id="helpBlock" class="help-block">Apenas números.</span>
                                     </div>
                                     <div class="form-group col-xs-6">
                                         <label for="RG">RG</label>
+                                        <span style="color: red">* </span>
                                         <p:inputMask mask="99.999.999-9" id="clientRG"  class="form-control" value="#{funcionarioController.clienteBean.rg}"/>
                                         <span id="helpBlock" class="help-block">Apenas números</span>
                                     </div>
-
+                                    <h2 style="margin-left:15px;">Contato</h2>
                                     <div class="form-group col-xs-6">
                                         <label for="homenumber">Telefone Residêncial</label>
                                         <div class="input-group">
@@ -93,20 +88,29 @@
                                     </div>
                                     <div class="form-group col-xs-12">
                                         <label for="email">E-mail</label>
+                                        <span style="color: red">* </span>
                                         <div class="input-group">
                                             <span class="input-group-addon" id="basic-addon1"><i class="fa fa-at"></i></span>
                                             <p:inputText id="clientMail" type="text" class="form-control" value="#{funcionarioController.clienteBean.email}"/>                                           
                                         </div>
                                         <span id="helpBlock" class="help-block">Caso perca sua senha a mesma será enviada para este endereço.</span>
                                     </div>
+                                    <span id="helpBlock" style="color: red" class="help-block">Os campos marcados com * são obrigatórios</span>   
+
                                 </div>
 
                                 <div class="col-md-6">
+                                    <h2>Endereço</h2>
+                                    <div class="form-group col-xs-4">
+                                        <label for="address">CEP</label>
+                                        <p:inputMask mask="99999-999"   class="form-control" value="#{funcionarioController.clienteBean.cep}"/>
+                                    </div>
 
                                     <div class="form-group col-xs-9">
                                         <label for="address">Endereço</label>
                                         <p:inputText id="clientAddress" type="text" class="form-control" value="#{funcionarioController.clienteBean.endereco}"/>
                                     </div>
+
                                     <div class="form-group col-xs-3">
                                         <label for="addressnumber">Número</label>
                                         <p:inputText id="clientAddressNumber" type="text" class="form-control" value="#{funcionarioController.clienteBean.numero}"/>
@@ -128,47 +132,48 @@
                                         <p:inputText id="clientNeighborhood" type="text" class="form-control" value="#{funcionarioController.clienteBean.bairro}"/>
                                     </div>
 
-                                    <div class="form-group col-xs-6">
-                                        <label for="username">Nome de Usuário</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-                                            <p:inputText id="clientUsername" type="text" class="form-control" value="#{funcionarioController.clienteBean.nome_usuario}"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-xs-6">
-                                        <label for="password">Senha</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
-                                            <p:inputText id="clientPassword" type="password" class="form-control" value="#{funcionarioController.clienteBean.senha}"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-xs-8">
-                                        <label for="password">Repetir Senha</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon" ><i class="fa fa-unlock-alt"></i></span>
-                                            <p:password   class="form-control" value="#{funcionarioController.senha}"/>
-                                        </div>
-                                        <br/>
-                                        <div class="input-group">
-                                            <h:selectOneMenu     value="#{funcionarioController.clienteBean.situacao}"  class="form-control" style="padding:3px;width:140px;height:35px;">
-                                                <f:selectItem   itemLabel="Ativo" itemValue="Ativo"   />
-                                                <f:selectItem   itemLabel="Inativo"  itemValue="Inativo"  />
-
-                                            </h:selectOneMenu>
-                                        </div>
+                                </div>
+                                <h2>Dados de Acesso</h2>
+                                <div class="form-group col-xs-2">
+                                    <label for="username">Nome de Usuário</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                        <p:inputText id="clientUsername" type="text" class="form-control" value="#{funcionarioController.clienteBean.nome_usuario}"/>
                                     </div>
                                 </div>
+                                <div class="form-group col-xs-2">
+                                    <label for="password">Senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
+                                        <p:inputText  type="password" class="form-control" value="#{funcionarioController.clienteBean.senha}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-2">
+                                    <label for="password">Confirmação de Senha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-unlock-alt"></i></span>
+                                        <p:inputText  type="password" class="form-control" value="#{funcionarioController.senha}"/>
+                                    </div>
+                                </div>
+
                             </div>
+                              <div class="panel-footer">
+                            <h:commandButton rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}" type="button" class="btn btn-default" value="Voltar" >
+                                <f:ajax listener="#{funcionarioController.navegarPara('/waiter.jsf')}" />
+                            </h:commandButton>
+                             <h:commandButton rendered="#{funcionarioController.funcionario.funcao.equals('Gerente')}" type="button" class="btn btn-default" value="Voltar" >
+                                 <f:ajax listener="#{funcionarioController.navegarPara('/admin.jsf')}" />
+                            </h:commandButton>
+                            <p:commandButton  actionListener="#{funcionarioController.salvarClient()}" ajax="false" class="btn btn-success" value="Finalizar Cadastro" style="float:right;" />
+                                      <p:messages showDetail="true"   style="color: red;font-weight: bold" /> 
+                      
+                      
+                              </div>
                         </div>
+                   
 
-                        <div class="panel-footer">
-                            <p:commandButton ajax="false"  class="btn btn-default btn-xs" rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}" value="Cancelar" actionListener="#{funcionarioController.navegarPara('/waiter.jsf')}"/>
-                            <p:commandButton ajax="false" class="btn btn-default btn-xs" rendered="#{funcionarioController.funcionario.funcao.equals('Gerente')}" value="Cancelar" actionListener="#{funcionarioController.navegarPara('/admin.jsf')}"/>
-                            <p:commandButton ajax="false" value="Finalizar Cadastro" actionListener="#{funcionarioController.salvarClient()}"  class="btn btn-success btn-xs" style="float:right;" />
-                        </div>
-
-                        <p:messages  showDetail="true" autoUpdate="false" closable="true"  />
+                      
                     </h:form>
 
                 </div>

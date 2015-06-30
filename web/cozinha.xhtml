@@ -27,7 +27,7 @@
                 <div class="container" style="width:95%;max-height: 95%;height: 95%;margin-top:5px;">
                     <div class="panel panel-default">
                         <div class="panel-body">                             
-
+                             <p:commandButton class="btn btn-default btn-xs" style="margin-left: 5px;" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
                             <div class="row clearfix" style="max-height: 95%; overflow-y: scroll;" >
                                 <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
 

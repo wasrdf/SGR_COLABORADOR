@@ -157,12 +157,16 @@ public class FuncionarioController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "As senhas devem ser iguais.", ""));
             return;
         } else {
-            if (Validacoes.isCPF(funcionarioNovo.getCpf().replace(".", "").replace("-", "")) == false) {
+            if (Validacoes.isCPF(clienteBean.getCpf().replace(".", "").replace("-", "")) == false) {
                 System.out.println("cpf digitado" + funcionarioNovo.getCpf());
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
                 return;
 
             } else {
+                if (!Validacoes.validarEmail(clienteBean.getEmail())) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Favor informar um email válido"));
+                    return;
+                }
 
                 if (clientService.inserirCliente(clienteBean) != null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente cadastrado com sucesso.", ""));
@@ -299,6 +303,7 @@ public class FuncionarioController {
 
             tableBean.setNumero(listaMovimento.get(0).getMesaNumero());
             tableBean.setStatus(false);
+            tableBean.setFrag("");
             tableBeanService.fecharMesa(tableBean);
             System.out.println("Numero da conta:" + listaMovimento.get(0).getContaCodigo());
             System.out.println("Numero Mesa@@@@@@@:" + listaMovimento.get(0).getMesaNumero());
@@ -313,10 +318,12 @@ public class FuncionarioController {
 
     public void mudarTela(Integer pTela) {
         funcionarioNovo = new FuncionarioBean();
+        clienteBean = new ClientBean();
         tela = pTela;
     }
 
     public void navegarPara(String pPagina) throws IOException {
+
         FacesContext ctx = FacesContext.getCurrentInstance();
 
         FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + pPagina);
@@ -373,17 +380,17 @@ public class FuncionarioController {
             return;
         } else {
             if (Validacoes.isCPF(funcionarioNovo.getCpf().replace(".", "").replace("-", "")) == false) {
-            System.out.println("cpf digitado" + funcionarioNovo.getCpf());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
-            return;
+                System.out.println("cpf digitado" + funcionarioNovo.getCpf());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Número de CPF inválido"));
+                return;
 
-        } else {
-            funcionarioService.salvar(funcionarioNovo);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Funcionario salvo."));
-            funcionarioNovo = new FuncionarioBean();
-            
+            } else {
+                funcionarioService.salvar(funcionarioNovo);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Funcionario salvo."));
+                funcionarioNovo = new FuncionarioBean();
+
             }
-            
+
         }
     }
 

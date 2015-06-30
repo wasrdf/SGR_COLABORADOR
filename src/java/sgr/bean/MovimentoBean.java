@@ -26,6 +26,18 @@ public class MovimentoBean {
     private boolean mesaStatus;
     private int contaItemCodigo;
     private Date data;
+    private int contador;
+
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
+    
+    
+    
 
     public int getContaItemCodigo() {
         return contaItemCodigo;

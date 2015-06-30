@@ -25,17 +25,12 @@
         <script src="js/bootstrap.js"></script>
     </h:head>
 
-    <h:body style="padding-top: 70px;">
+    <h:body style="padding-top: 100px;">
         <!-- Inclui HEADER -->
         <ui:include src="masterheader.xhtml" />
 
-        <!-- Corpo Principal -->
-        <div class="container">
-            <div class="row clearfix">
-                
-                <!-- Painel Esquerdo -->
-                <div class="col-md-6 column">
-                    <div class="panel panel-default">
+               
+        <div style="width: 50%;margin-left: 20px"  class="panel panel-default">
                         <div class="panel-heading">
                             <h5><i class="fa fa-reorder sgr-panel-icon" style="font-size:14px;"/> Funções</h5>
                         </div>
@@ -96,11 +91,11 @@
                             </h:form>  
                         </div>
                     </div>
-                </div>
+                
 
                 <!-- Painel Direito -->
-                <div class="col-md-6 column">
-                    <div class="panel panel-default">
+                
+                <div style="margin-left: 20px;margin-right: 20px" class="panel panel-default">
                         <div class="panel-heading">
                             <h5><i class="fa fa-exclamation-triangle sgr-panel-icon" style="font-size:14px;"/> Solicitações</h5>
                         </div>
@@ -124,7 +119,9 @@
                                             </p:column>
                                             
                                             <p:column headerText="Preço" style="text-align: center;">                                        
-                                                <h:outputText  value="#{item.preco}"/>
+                                                <h:outputText  value="#{item.preco}" >
+                                                <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>
+                                                </h:outputText>
                                             </p:column>
                                             
                                                    <p:column headerText="Quantidade" style="text-align: center;">                                        
@@ -148,8 +145,7 @@
                             </h:form>
                         </div>
                     </div>
-                </div>       
-            </div>
-        </div>
+                
+       
     </h:body>
 </html>

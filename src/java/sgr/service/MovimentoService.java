@@ -79,7 +79,7 @@ public class MovimentoService {
 
         query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
         query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Solicitado", QueryType.text);
-        query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Pronto", QueryType.text);
+        //query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Pronto", QueryType.text);
         query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Em Preparo", QueryType.text);
       
         query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "Cancelamento", QueryType.text);
