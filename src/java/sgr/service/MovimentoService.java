@@ -128,6 +128,7 @@ public class MovimentoService {
 
         query.addQuery(QueryOperation.empty, "vw_movimento.data", QueryGender.has, String.valueOf(pData), QueryType.text);
         query.addQuery(QueryOperation.and, "vw_movimento.conta_status", QueryGender.equal, String.valueOf(0), QueryType.number);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Entregue", QueryType.text);
 
         MovimentoDAO movimentoDAO = new MovimentoDAO();
 
