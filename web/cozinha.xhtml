@@ -30,7 +30,7 @@
                              <p:commandButton class="btn btn-default btn-xs" style="margin-left: 5px;" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
                             <div class="row clearfix" style="max-height: 95%; overflow-y: scroll;" >
                                 <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
-
+                                  <h:messages class="alert alert-warning" showDetail="true" layout="table" style="width:100%;padding-bottom:15px;"/>
                                 <p:dataTable  style="width: 100%" id="movimento" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaMovimento}">
 
                                     <p:column width="7%" headerText="Mesa" style="text-align: center;font-size:22px;">
@@ -66,13 +66,14 @@
  
 
                                     <p:column headerText="Definir" style="text-align: center;font-size:22px;">
-                                        <p:commandButton class="btn btn-info btn-xs" style="margin-left:5px;" update="movimento" value="Em Praparo" actionListener="#{funcionarioController.emPraparo(movimento)}" />
-                                        <p:commandButton class="btn btn-success btn-xs" style="margin-left:5px;" update="movimento" value="Pronto" actionListener="#{funcionarioController.alterarStatusItem(movimento)}" />                   
-                                        <p:commandButton class="btn btn-default btn-xs" style="margin-left:5px;" update="movimento" value="Solicitado" actionListener="#{funcionarioController.desfazer(movimento)}" />
+                                        <p:commandButton ajax="false" class="btn btn-info btn-xs" style="margin-left:5px;" update="movimento" value="Em Praparo" actionListener="#{funcionarioController.emPraparo(movimento)}" />
+                                        <p:commandButton ajax="false" class="btn btn-success btn-xs" style="margin-left:5px;" update="movimento" value="Pronto" actionListener="#{funcionarioController.alterarStatusItem(movimento)}" />                   
+                                        <p:commandButton ajax="false" class="btn btn-default btn-xs" style="margin-left:5px;" update="movimento" value="Solicitado" actionListener="#{funcionarioController.desfazer(movimento)}" />
                                     </p:column>
 
 
                                 </p:dataTable>
+                                
 
                             </div>
                         </div>                        

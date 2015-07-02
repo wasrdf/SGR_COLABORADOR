@@ -66,8 +66,8 @@ public class FuncionarioController {
     DecimalFormat df = new DecimalFormat("#,###.00");
     String valorTotal = "";
     String statusSelecionado = "";
-    Date dataFiltro;
-    String dataStringFiltro = "";
+    String dataFiltro =  "";
+    
     List<ClientBean> listaCliente = new ArrayList<ClientBean>();
 
     public FuncionarioController() {
@@ -78,6 +78,7 @@ public class FuncionarioController {
         CurrentHour = dfHour.format(dataAtual);
         listarItensCancelamento();
         listarItensProntosESolicitados();
+        relatorios = new ArrayList<MovimentoBean>();
 
     }
 
@@ -113,27 +114,38 @@ public class FuncionarioController {
 
     public void emPraparo(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
+        if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("Em Preparo");
         contaItemDAO.alterarItemStatus(contaItemBean);
         listarItensProntosESolicitados();
+     } else {
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+        }
     }
-
     public void alterarStatusItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
+        if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("Pronto");
         System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
         contaItemDAO.alterarItemStatus(contaItemBean);
+        } else {
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+        }
         listarItensProntosESolicitados();
     }
 
     public void desfazer(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
+       if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
         contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
         contaItemBean.setStatus("Solicitado");
 
         contaItemDAO.alterarItemStatus(contaItemBean);
+       } else {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+       }
         listarItensProntosESolicitados();
     }
 
@@ -323,7 +335,7 @@ public class FuncionarioController {
     }
 
     public void navegarPara(String pPagina) throws IOException {
-
+        relatorios = new ArrayList<MovimentoBean>();
         FacesContext ctx = FacesContext.getCurrentInstance();
 
         FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + pPagina);
@@ -397,14 +409,20 @@ public class FuncionarioController {
     //metodo gerar relatorios de vendas por data
     public void gerarRelatorios() {
         MovimentoService movimentoService = new MovimentoService();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date result = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            dataFiltro = simpleDateFormat.parse(dataStringFiltro);
+            result = formatter.parse(dataFiltro);
+            System.out.println("Resultado:" + result);
+            java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+            System.out.println("SQL Date:" + sqlDate);
+            relatorios = movimentoService.gerarRelatorios(sqlDate);
+        
         } catch (ParseException ex) {
             Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Data" + simpleDateFormat.format(dataFiltro));
-        //relatorios = movimentoService.gerarRelatorios();
+        
+       
     }
 
     public void pedidoSelecionado(MovimentoBean pMovimento) {
@@ -644,22 +662,15 @@ public class FuncionarioController {
         this.relatorios = relatorios;
     }
 
-    public Date getDataFiltro() {
+    public String getDataFiltro() {
         return dataFiltro;
     }
 
-    public void setDataFiltro(Date dataFiltro) {
+    public void setDataFiltro(String dataFiltro) {
         this.dataFiltro = dataFiltro;
     }
 
-    public String getDataStringFiltro() {
-        return dataStringFiltro;
-    }
-
-    public void setDataStringFiltro(String dataStringFiltro) {
-        this.dataStringFiltro = dataStringFiltro;
-    }
-
+    
     public List<MovimentoBean> getListaItensProntos() {
         return listaItensProntos;
     }

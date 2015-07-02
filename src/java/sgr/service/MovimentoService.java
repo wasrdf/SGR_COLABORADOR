@@ -5,9 +5,9 @@
  */
 package sgr.service;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,7 +126,7 @@ public class MovimentoService {
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
 
-        query.addQuery(QueryOperation.empty, "vw_movimento.data", QueryGender.has, String.valueOf(pData), QueryType.date);
+        query.addQuery(QueryOperation.empty, "vw_movimento.data", QueryGender.has, String.valueOf(pData), QueryType.text);
         query.addQuery(QueryOperation.and, "vw_movimento.conta_status", QueryGender.equal, String.valueOf(0), QueryType.number);
 
         MovimentoDAO movimentoDAO = new MovimentoDAO();

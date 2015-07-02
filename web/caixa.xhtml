@@ -38,57 +38,11 @@
                             
                             <!-- Botões de Função -->
                             <h:form id="frmPrincipal" rendered="#{funcionarioController.tela == 0}"  >
-                                <p:commandButton ajax="false" class="btn btn-default btn-xs" action="#{funcionarioController.mudarTela(1)}" value="Gerar Relatório de Vendas"  />
+                                <p:commandButton ajax="false" class="btn btn-default btn-xs" action="#{funcionarioController.navegarPara('/gerarRelatorios.jsf')}" value="Gerar Relatório de Vendas"  />
                                 <p:commandButton class="btn btn-danger btn-xs" action="#{funcionarioController.navegarPara('/encerrarConta.jsf')}" value="Encerrar Contas"  />
                             </h:form>
                             
-                            <!-- Painel de Relatório -->
-                            <h:form style="margin-top: 5%" rendered="#{funcionarioController.tela == 1}">
-                                
-                                <!-- Botão Voltar -->
-                                <div style="margin-top:-30px;">
-                                    <p:commandButton ajax="false" class="btn btn-default btn-xs" action="#{funcionarioController.mudarTela(0)}" value="Voltar" />
-                                </div>
-                                <p:separator/>
-                                <div class="row">
-                                    
-                                    <!-- Funções de Relatório -->
-                                    <div class="col-lg-3">
-                                        <p>                                            
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-calendar"/></span>
-                                                <p:inputMask class="form-control" mask="99/99/9999" style="width:auto;height:32px;" value="#{funcionarioController.dataFiltro}">
-                                                </p:inputMask>
-                                                <span class="input-group-btn">
-                                                    <p:commandButton class="btn btn-default btn-xs" update="relatorio" value="Gerar Relatório por Data" actionListener="#{funcionarioController.gerarRelatorios()}"/>
-                                                </span>
-                                            </div>
-                                        </p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Relatório -->
-                                <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
-                                    <div class="table-responsive">
-                                        <p:dataTable  tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhuma informação encontrada" var="relatorio" id="relatorio" value="#{funcionarioController.relatorios}" >
-                                            <p:column headerText="Cliente" >
-                                                <h:outputText value="#{relatorio.clienteNome}" />
-                                            </p:column>
-                                            <p:column headerText="Qnt." >
-                                                <h:outputText value="#{relatorio.quantidade}" />
-                                            </p:column>
-                                            <p:column headerText="Preço" >
-                                                <h:outputText value="#{relatorio.preco}" >
-                                                      <f:convertNumber pattern="#,##0.00" minFractionDigits="2"/>  
-                                                </h:outputText>
-                                            </p:column>
-                                            <p:column headerText="Data" >
-                                                <h:outputText value="#{relatorio.data}" />
-                                            </p:column>                
-                                        </p:dataTable>    
-                                    </div>
-                                </div>
-                            </h:form>  
+                            
                         </div>
                     </div>
                 
