@@ -66,8 +66,8 @@ public class FuncionarioController {
     DecimalFormat df = new DecimalFormat("#,###.00");
     String valorTotal = "";
     String statusSelecionado = "";
-    String dataFiltro =  "";
-    
+    String dataFiltro = "";
+
     List<ClientBean> listaCliente = new ArrayList<ClientBean>();
 
     public FuncionarioController() {
@@ -114,38 +114,39 @@ public class FuncionarioController {
 
     public void emPraparo(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
-        if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
-        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
-        contaItemBean.setStatus("Em Preparo");
-        contaItemDAO.alterarItemStatus(contaItemBean);
-        listarItensProntosESolicitados();
-     } else {
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+        if (!pMovimentoBean.getItemStatus().equals("Entregue")) {
+            contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+            contaItemBean.setStatus("Em Preparo");
+            contaItemDAO.alterarItemStatus(contaItemBean);
+            listarItensProntosESolicitados();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
         }
     }
+
     public void alterarStatusItem(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
-        if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
-        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
-        contaItemBean.setStatus("Pronto");
-        System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
-        contaItemDAO.alterarItemStatus(contaItemBean);
+        if (!pMovimentoBean.getItemStatus().equals("Entregue")) {
+            contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+            contaItemBean.setStatus("Pronto");
+            System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
+            contaItemDAO.alterarItemStatus(contaItemBean);
         } else {
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
         }
         listarItensProntosESolicitados();
     }
 
     public void desfazer(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
-       if(!pMovimentoBean.getItemStatus().equals("Entregue")) {
-        contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
-        contaItemBean.setStatus("Solicitado");
+        if (!pMovimentoBean.getItemStatus().equals("Entregue")) {
+            contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
+            contaItemBean.setStatus("Solicitado");
 
-        contaItemDAO.alterarItemStatus(contaItemBean);
-       } else {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
-       }
+            contaItemDAO.alterarItemStatus(contaItemBean);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
+        }
         listarItensProntosESolicitados();
     }
 
@@ -200,57 +201,69 @@ public class FuncionarioController {
     public void logar() throws IOException {
 
         FacesContext ctx = FacesContext.getCurrentInstance();
+        try {
+            listFuncionario = funcionarioService.logar(funcionarioLogin, funcionarioSenha);
+            System.out.println(listFuncionario.size());
+            funcionario = listFuncionario.get(0);
 
-        listFuncionario = funcionarioService.logar(funcionarioLogin, funcionarioSenha);
-        System.out.println(listFuncionario.size());
-        funcionario = listFuncionario.get(0);
+            System.out.println("usuario do banco" + funcionario.getNome_usuario());
+            System.out.println("senha do banco" + funcionario.getSenha());
+            System.out.println("Nivel do funcionario" + funcionario.getFuncao());
 
-        System.out.println("usuario do banco" + funcionario.getNome_usuario());
-        System.out.println("senha do banco" + funcionario.getSenha());
-        System.out.println("Nivel do funcionario" + funcionario.getFuncao());
+            session = (HttpSession) ctx.getExternalContext().getSession(false);
+            session.setAttribute("currentUser", funcionario);
 
-        session = (HttpSession) ctx.getExternalContext().getSession(false);
-        session.setAttribute("currentUser", funcionario);
+            if (funcionarioLogin.equals(funcionario.getNome_usuario()) && (funcionarioSenha.equals(funcionario.getSenha()))) {
 
-        //carrega lista de pedidos em aberto
-        MovimentoService movimentoService = new MovimentoService();
-        listaMovimento = movimentoService.listarTodosMovimento("");
+                //carrega lista de pedidos em aberto
+                MovimentoService movimentoService = new MovimentoService();
+                listaMovimento = movimentoService.listarTodosMovimento("");
 
-        //listar mesas em aberto
-        TableBeanService tableBeanService = new TableBeanService();
-        listaMesasAberto = tableBeanService.listarMesasAbertas();
+                //listar mesas em aberto
+                TableBeanService tableBeanService = new TableBeanService();
+                listaMesasAberto = tableBeanService.listarMesasAbertas();
 
-        if (funcionario.getFuncao().equals("Gerente")) {
-            System.out.println("Gerente logando");
-            listarClientes();
-            FacesContext.getCurrentInstance().getExternalContext().
-                    redirect(ctx.getExternalContext().getRequestContextPath() + "/admin.jsf");
-            listFuncionario = funcionarioService.listarFuncionario(filtroDeFuncionario);
-        } else {
-
-            if (funcionario.getFuncao().equals("Garçom")) {
-                System.out.println("Garçom logando");
-                listarItensProntos();
-                FacesContext.getCurrentInstance().getExternalContext().
-                        redirect(ctx.getExternalContext().getRequestContextPath() + "/waiter.jsf");
-
-            } else {
-
-                if (funcionario.getFuncao().equals("Caixa")) {
-
-                    System.out.println("Caixa logando");
+                if (funcionario.getFuncao().equals("Gerente")) {
+                    System.out.println("Gerente logando");
+                    listarClientes();
                     FacesContext.getCurrentInstance().getExternalContext().
-                            redirect(ctx.getExternalContext().getRequestContextPath() + "/caixa.jsf");
-
+                            redirect(ctx.getExternalContext().getRequestContextPath() + "/admin.jsf");
+                    listFuncionario = funcionarioService.listarFuncionario(filtroDeFuncionario);
                 } else {
-                    if (funcionario.getFuncao().equals("Cozinha")) {
-                        System.out.println("Cozinha logando");
-                        FacesContext.getCurrentInstance().getExternalContext().
-                                redirect(ctx.getExternalContext().getRequestContextPath() + "/cozinha.jsf");
 
+                    if (funcionario.getFuncao().equals("Garçom")) {
+                        System.out.println("Garçom logando");
+                        listarItensProntos();
+                        FacesContext.getCurrentInstance().getExternalContext().
+                                redirect(ctx.getExternalContext().getRequestContextPath() + "/waiter.jsf");
+
+                    } else {
+
+                        if (funcionario.getFuncao().equals("Caixa")) {
+
+                            System.out.println("Caixa logando");
+                            FacesContext.getCurrentInstance().getExternalContext().
+                                    redirect(ctx.getExternalContext().getRequestContextPath() + "/caixa.jsf");
+
+                        } else {
+                            if (funcionario.getFuncao().equals("Cozinha")) {
+                                System.out.println("Cozinha logando");
+                                FacesContext.getCurrentInstance().getExternalContext().
+                                        redirect(ctx.getExternalContext().getRequestContextPath() + "/cozinha.jsf");
+
+                            }
+                        }
                     }
                 }
+            } else {
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
+                //FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+
             }
+        } catch (Exception e) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
         }
 
     }
@@ -417,12 +430,11 @@ public class FuncionarioController {
             java.sql.Date sqlDate = new java.sql.Date(result.getTime());
             System.out.println("SQL Date:" + sqlDate);
             relatorios = movimentoService.gerarRelatorios(sqlDate);
-        
+
         } catch (ParseException ex) {
             Logger.getLogger(FuncionarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-       
+
     }
 
     public void pedidoSelecionado(MovimentoBean pMovimento) {
@@ -670,7 +682,6 @@ public class FuncionarioController {
         this.dataFiltro = dataFiltro;
     }
 
-    
     public List<MovimentoBean> getListaItensProntos() {
         return listaItensProntos;
     }
