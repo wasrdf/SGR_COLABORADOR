@@ -70,19 +70,21 @@
                                         <p:poll interval="30" listener="#{funcionarioController.recarregarMesas()}" update="movimento2" />
 
                                         <p:dataTable id="movimento2" style="text-align: center;"  tableStyleClass="table table-striped" emptyMessage="Nenhuma mesa em aberto." var="mesas" value="#{funcionarioController.listaMesasAberto}">
-
+                                            
                                             <p:column headerText="Mesa" class="sgr_p">
                                                 <h:outputText class="sgr_price" value="#{mesas.numero}" />
                                             </p:column>                                            
 
-                                            <p:column headerText="Pendente" class="sgr_p" style="text-align:left;" width="100px;">
-                                                -
+                                            
+                                            <p:column headerText="Solicitação" class="sgr_p">
+                                                <h:outputText class="sgr_price" value="#{mesas.flagGarcom}" />
+                                            </p:column>                                            
+
+                                             <p:column headerText="Limpar Solicitação" class="sgr_p">
+                                                 <p:commandButton ajax="false" class="btn btn-default btn-xs" update="mesas" value="Limpar" actionListener="#{funcionarioController.atendido(mesas)}"  />
                                             </p:column>
 
-                                            <p:column headerText="Prontos" class="sgr_p" style="text-align:left;" width="100px;">
-                                                -
-                                            </p:column>
-
+                                                
                                             <p:column headerText="Função" class="sgr_p">
                                                 <p:commandButton ajax="false" class="btn btn-default btn-xs" update="mesas" value="Visualizar" actionListener="#{funcionarioController.visualizarPedidos(mesas)}" />
                                             </p:column>
@@ -108,7 +110,7 @@
 
                                 <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
                                     <div class="table-responsive">
-                                        <p:dataTable  id="movimento" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum pedido encontrado." var="movimento" value="#{funcionarioController.listaMovimento}">
+                                        <p:dataTable  id="movimento" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum pedido encontrado." var="movimento" value="#{funcionarioController.listaItensProntos}">
 
                                             <p:column headerText="Mesa" style="text-align:center;">
                                                 <h:outputText class="sgr_price" value="#{movimento.mesaNumero}" />

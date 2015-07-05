@@ -65,7 +65,7 @@ public class ClientDAO {
 
     }
 
-    public void atualizarCliente(ClientBean pClient) throws SQLException {
+    public ClientBean atualizarCliente(ClientBean pClient) throws SQLException {
 
         ConnectionBuilder conexao = new ConnectionBuilder();
         Connection conn = conexao.getConnection();
@@ -91,6 +91,7 @@ public class ClientDAO {
         ps.execute();
         ps.close();
         conn.close();
+        return pClient;
     }
 
     

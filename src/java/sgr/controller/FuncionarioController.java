@@ -23,6 +23,7 @@ import sgr.bean.SessionBean;
 import sgr.bean.TableBean;
 import sgr.dao.ContaItemDAO;
 import sgr.dao.SessionBeanDAO;
+import sgr.dao.TableDAO;
 import sgr.service.ClientService;
 import sgr.service.ContaItemBean;
 import sgr.service.FuncionarioService;
@@ -84,12 +85,22 @@ public class FuncionarioController {
 
     public void listarItensProntos() {
         MovimentoService movimentoService = new MovimentoService();
-        listaItensProntos = movimentoService.listarItensProntos("");
+        listaItensProntos = movimentoService.listarItensProntos(filtroPedido);
     }
 
     public void listarItensCancelamento() {
         MovimentoService movimentoService = new MovimentoService();
         listaItensCancelados = movimentoService.listarItensCancelados("");
+    }
+
+    public void atendido(TableBean pTableBean) {
+        System.out.println("Mesa selecionada: " + pTableBean.getNumero());
+        TableDAO tableDAO = new TableDAO();
+        tableBean.setNumero(pTableBean.getNumero());
+        tableBean.setFlagGarcom(" - ");
+        tableBean.setStatus(true);
+        tableDAO.gerenciarMesas(tableBean);
+        carregarMesasAberto();
     }
 
     //aqui o caixa ou o gerente altera o status do item de Cancelamento para CANCELADO
@@ -112,13 +123,19 @@ public class FuncionarioController {
 
     }
 
+    public void listarPedidosCozinha() {
+        MovimentoService movimentoService = new MovimentoService();
+        listaPedidosCozinha = movimentoService.listarItensSolicitadosEmPreparo("");
+    }
+
     public void emPraparo(MovimentoBean pMovimentoBean) {
         ContaItemDAO contaItemDAO = new ContaItemDAO();
+
         if (!pMovimentoBean.getItemStatus().equals("Entregue")) {
             contaItemBean.setCodigo(pMovimentoBean.getContaItemCodigo());
             contaItemBean.setStatus("Em Preparo");
             contaItemDAO.alterarItemStatus(contaItemBean);
-            listarItensProntosESolicitados();
+            listarPedidosCozinha();
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
         }
@@ -134,7 +151,7 @@ public class FuncionarioController {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O Item já foi entregue.", ""));
         }
-        listarItensProntosESolicitados();
+        listarPedidosCozinha();
     }
 
     public void desfazer(MovimentoBean pMovimentoBean) {
@@ -159,7 +176,7 @@ public class FuncionarioController {
             contaItemBean.setStatus("Entregue");
             System.out.println("STATUS DO ITEM ALTERADO: " + contaItemBean.getStatus());
             contaItemDAO.alterarItemStatus(contaItemBean);
-            listarItensProntosESolicitados();
+            listarItensProntos();
         }
     }
 
@@ -197,6 +214,12 @@ public class FuncionarioController {
         listaCliente = clientService.listarClientes(filtroDeFuncionario);
     }
 
+    public void carregarMesasAberto() {
+        TableBeanService tableBeanService = new TableBeanService();
+        listaMesasAberto = tableBeanService.listarMesasAbertas();
+
+    }
+
     //metodo cadastrar cliente() 
     public void logar() throws IOException {
 
@@ -217,7 +240,7 @@ public class FuncionarioController {
 
                 //carrega lista de pedidos em aberto
                 MovimentoService movimentoService = new MovimentoService();
-                listaMovimento = movimentoService.listarTodosMovimento("");
+                //listaMovimento = movimentoService.listarTodosMovimento("");
 
                 //listar mesas em aberto
                 TableBeanService tableBeanService = new TableBeanService();
@@ -248,6 +271,7 @@ public class FuncionarioController {
                         } else {
                             if (funcionario.getFuncao().equals("Cozinha")) {
                                 System.out.println("Cozinha logando");
+                                listarPedidosCozinha();
                                 FacesContext.getCurrentInstance().getExternalContext().
                                         redirect(ctx.getExternalContext().getRequestContextPath() + "/cozinha.jsf");
 
@@ -258,12 +282,13 @@ public class FuncionarioController {
             } else {
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informações inválidas para acesso. Por favor, tente novamente!"));
-                //FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.xhtml");
+                //FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.jsf");
 
             }
         } catch (Exception e) {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informações inválidas para acesso. Por favor, tente novamente!", ""));
+            //FacesContext.getCurrentInstance().getExternalContext().redirect(ctx.getExternalContext().getRequestContextPath() + "/index.jsf");
         }
 
     }
@@ -277,7 +302,8 @@ public class FuncionarioController {
         //carrega lista de pedidos em aberto
         MovimentoService movimentoService = new MovimentoService();
         listaMovimento = movimentoService.listarTodosMovimento(filtroPedido);
-
+        listaPedidosCozinha = movimentoService.listarTodosMovimento(filtroPedido);
+        listaItensProntos = movimentoService.listarTodosMovimento(filtroPedido);
     }
 
     public void visualizarPedidos(TableBean pTableBean) {
@@ -440,13 +466,6 @@ public class FuncionarioController {
     public void pedidoSelecionado(MovimentoBean pMovimento) {
         movimentoBean = pMovimento;
         tela = 1;
-    }
-
-    public void deletarFuncionario() {
-
-        funcionarioService.deletarFuncionario(funcionarioNovo);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Funcionario deletado com sucesso."));
-        funcionarioNovo = new FuncionarioBean();
     }
 
     //GET E SET

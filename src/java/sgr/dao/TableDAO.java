@@ -70,4 +70,29 @@ public class TableDAO {
         }
 
     }
+
+    public boolean gerenciarMesas(TableBean pTableBean) {
+        ConnectionBuilder conexao = new ConnectionBuilder();
+        Connection conn = null;
+        try {
+            conn = conexao.getConnection();
+            String sql = "update mesa set status = ?,flag = ?,flag_garcom=? where numero=?";
+            System.out.println(sql);
+            PreparedStatement ps;
+            ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, pTableBean.isStatus());
+            ps.setString(2, "");
+            ps.setString(3, pTableBean.getFlagGarcom());
+            ps.setInt(4, pTableBean.getNumero());
+            ps.execute();
+            ps.close();
+            conn.close();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(TableDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+    }
+
 }

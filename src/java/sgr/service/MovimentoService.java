@@ -72,7 +72,7 @@ public class MovimentoService {
         return movimentos;
     }
 
-    public List<MovimentoBean> listarItensSolicitados(String pNome) {
+     public List<MovimentoBean> listarItensSolicitadosEmPreparo(String pNome) {
 
         List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
         QueryBuilder query = new QueryBuilder();
@@ -80,6 +80,37 @@ public class MovimentoService {
         query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
         query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Solicitado", QueryType.text);
         //query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Pronto", QueryType.text);
+        query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Em Preparo", QueryType.text);
+      
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "Cancelamento", QueryType.text);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "Cancelado", QueryType.text);
+       
+        MovimentoDAO movimentoDAO = new MovimentoDAO();
+
+        try {
+            System.out.println("[movimentoservice] listando movimentos....");
+            movimentos = movimentoDAO.listaMovimentos(query);
+
+        } catch (SQLException ex) {
+            System.out.println("erro ao tentar listar movimentos: " + ex.getSQLState());
+            Logger.getLogger(MovimentoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return movimentos;
+    }
+
+    
+    
+    
+    
+    public List<MovimentoBean> listarItensSolicitados(String pNome) {
+
+        List<MovimentoBean> movimentos = new ArrayList<MovimentoBean>();
+        QueryBuilder query = new QueryBuilder();
+
+        query.addQuery(QueryOperation.empty, "vw_movimento.cliente", QueryGender.has, pNome, QueryType.text);
+        query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.equal, "Solicitado", QueryType.text);
+        query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Pronto", QueryType.text);
         query.addQuery(QueryOperation.or, "vw_movimento.item_status", QueryGender.equal, "Em Preparo", QueryType.text);
       
         query.addQuery(QueryOperation.and, "vw_movimento.item_status", QueryGender.different, "Cancelamento", QueryType.text);

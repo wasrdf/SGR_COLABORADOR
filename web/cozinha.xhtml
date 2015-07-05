@@ -29,9 +29,9 @@
                         <div class="panel-body">                             
                              <p:commandButton class="btn btn-default btn-xs" style="margin-left: 5px;" update="movimento" value="Listar todos os pedidos" actionListener="#{funcionarioController.carregarPedidos()}" />
                             <div class="row clearfix" style="max-height: 95%; overflow-y: scroll;" >
-                                <p:poll interval="30" listener="#{funcionarioController.listarItensProntosESolicitados()}" update="movimento" />
+                                <p:poll interval="30" listener="#{funcionarioController.listarPedidosCozinha()}" update="movimento" />
                                   <h:messages class="alert alert-warning" showDetail="true" layout="table" style="width:100%;padding-bottom:15px;"/>
-                                <p:dataTable  style="width: 100%" id="movimento" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaMovimento}">
+                                  <p:dataTable  style="width: 100%" id="movimento" tableStyleClass="table table-striped sgr_p" emptyMessage="Nenhum pedido realizado." var="movimento" value="#{funcionarioController.listaPedidosCozinha}">
 
                                     <p:column width="7%" headerText="Mesa" style="text-align: center;font-size:22px;">
                                         <h:outputText style="font-size:18px;" value="#{movimento.mesaNumero}" />
