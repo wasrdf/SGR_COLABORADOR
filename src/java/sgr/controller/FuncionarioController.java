@@ -296,6 +296,11 @@ public class FuncionarioController {
     public void recarregarMesas() {
         TableBeanService tableBeanService = new TableBeanService();
         listaMesasAberto = tableBeanService.listarMesasAbertas();
+        listarItensCancelamento();
+        listarItensProntosESolicitados();
+        listarItensProntos();
+        
+    
     }
 
     public void carregarPedidos() {
