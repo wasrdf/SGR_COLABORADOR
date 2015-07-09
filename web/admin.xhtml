@@ -48,7 +48,7 @@
                                 <h5><i class="fa fa-exclamation-triangle sgr-panel-icon" style="font-size:14px;"></i> Solicitações</h5>
                             </div>
                             <div class="panel-body">
-                                <p:poll interval="30" listener="#{funcionarioController.listarItensCancelamento()}" update="item" />
+                                <p:poll interval="10" listener="#{funcionarioController.listarItensCancelamento()}" update="item" />
                                 <div class="row clearfix" style="max-height:300px;overflow-y: scroll;">
                                     <div class="table-responsive"> 
                                         <p:dataTable tableStyleClass="table table-striped sgr_p" rendered="#{funcionarioController.listaItensCancelados.size() > 0}" var="item" value="#{funcionarioController.listaItensCancelados}" id="item">
