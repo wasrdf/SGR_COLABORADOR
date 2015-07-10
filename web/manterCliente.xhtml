@@ -158,20 +158,20 @@
                                 </div>
 
                             </div>
-                              <div class="panel-footer">
+                              
+                        </div>
+                   <div class="panel-footer">
                             <h:commandButton rendered="#{funcionarioController.funcionario.funcao.equals('Garçom')}" type="button" class="btn btn-default" value="Voltar" >
                                 <f:ajax listener="#{funcionarioController.navegarPara('/waiter.jsf')}" />
                             </h:commandButton>
                              <h:commandButton rendered="#{funcionarioController.funcionario.funcao.equals('Gerente')}" type="button" class="btn btn-default" value="Voltar" >
                                  <f:ajax listener="#{funcionarioController.navegarPara('/admin.jsf')}" />
                             </h:commandButton>
-                            <p:commandButton  actionListener="#{funcionarioController.salvarClient()}" ajax="false" class="btn btn-success" value="Finalizar Cadastro" style="float:right;" />
+                            <p:commandButton  actionListener="#{funcionarioController.salvarClient()}" ajax="false" class="btn btn-success btn-xs" value="Finalizar Cadastro" style="float:right;" />
                                       <p:messages showDetail="true"   style="color: red;font-weight: bold" /> 
                       
                       
                               </div>
-                        </div>
-                   
 
                       
                     </h:form>
